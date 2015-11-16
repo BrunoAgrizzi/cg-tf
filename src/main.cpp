@@ -4,6 +4,13 @@
 #include <math.h>
 #include "imageloader.h"
 #include "Cube.h"
+#include <string.h>
+#include "XMLConfig.h"
+#include "Arena.h"
+
+XMLConfig config;
+Arena arena;
+
 
 GLuint textureEarth;
 GLuint textureSun;
@@ -222,6 +229,16 @@ void keyboard(unsigned char key, int x, int y)
 }
 
 int main (int argc, char **argv) {
+    char path[255];
+	if(argc != 2){
+		strcpy(path, "../config.xml");
+	}else{
+		strcpy(path, argv[1]);
+		strcat(path, "config.xml");
+	}
+
+    config.readXML(path);
+    arena.readXMLArena((config.getArena().getPath() + config.getArena().getName() + "." + config.getArena().getExtension()).c_str());
 
     glutInit (&argc, argv);
     glutInitDisplayMode (GLUT_DOUBLE | GLUT_DEPTH);
@@ -232,9 +249,7 @@ int main (int argc, char **argv) {
     glutDisplayFunc (idle);
     glutIdleFunc (display);
     glutReshapeFunc (reshape);
-
     glutKeyboardFunc(keyboard);
-
     glutMotionFunc(mouse_motion);
     glutMouseFunc(mouse_callback);
 
