@@ -1,358 +1,244 @@
+#include <GL/gl.h>
+#include <GL/glu.h>
 #include <GL/glut.h>
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <string>
 #include <math.h>
-#include <cstring>
-#include "XMLConfig.h"
-#include "Arena.h"
-#include "Helicopter.h"
-#include "Utils.h"
+#include "imageloader.h"
+#include "Cube.h"
+
+GLuint textureEarth;
+GLuint textureSun;
+GLuint texturePlane;
+double angleDay = 0;
+double angleYear = 0;
+
+//Camera controls
+double camDist=50;
+double camXYAngle=0;
+double camXZAngle=0;
+int toggleCam = 0;
+int camAngle = 60;
+int lastX = 0;
+int lastY = 0;
+int buttonDown=0;
+
+//GLuint LoadTextureRAW( const char * filename );
+
+void DrawAxes(){
+
+    GLfloat materialEmission[] = { 1.00, 1.00, 0.00, 1};
+    GLfloat materialColor[] = { 1.0, 1.0, 0.0, 1};
+    GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1};
+    GLfloat mat_shininess[] = { 50.0 };
 
 
-#define ARENAX arena.getArena().getWidth()
-#define ARENAY arena.getArena().getHeight()
+    glMaterialfv(GL_FRONT, GL_EMISSION, materialEmission);
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, materialColor);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
 
-using namespace std;
-double Distance(double dX0, double dY0, double dX1, double dY1)
+    GLfloat mat_ambient_r[] = { 1.0, 0.0, 0.0, 1.0 };
+    GLfloat mat_ambient_g[] = { 0.0, 1.0, 0.0, 1.0 };
+    GLfloat mat_ambient_b[] = { 0.0, 0.0, 1.0, 1.0 };
+
+    glPushAttrib(GL_ENABLE_BIT);
+        glDisable(GL_LIGHTING);
+        glDisable(GL_TEXTURE_2D);
+
+        glPushMatrix();
+            Cube c = Cube();
+            c.setScale(5,5,5);
+            c.setTranslation(0.5,0,0);
+            c.draw();
+        glPopMatrix();
+
+        glPopAttrib();
+
+}
+
+
+void display (void) {
+    glClearColor (0.0,0.0,0.0,1.0);
+    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
+
+    // camera inicia a uma distancia do obj
+    glTranslatef(0,0,-camDist);
+    glRotatef(camXZAngle,1,0,0);
+    glRotatef(camXYAngle,0,1,0);
+
+
+    GLfloat light_position[] = { 0.0, 0.0, 0.0, 1.0 };
+    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+ //    glEnable(GL_LIGHT1);
+ //    GLfloat light_position1[] = { 70.0, 70.0, 0.0, 1.0 };
+ //    GLfloat light1[] = {1,1,1,1};
+ //    glLightfv(GL_LIGHT1, GL_POSITION, light_position1);
+ //    glLightfv(GL_LIGHT1, GL_DIFFUSE, light1);
+
+    glPushMatrix();
+        glScalef(70,70,1);
+        glTranslatef(0,0,-12);
+        glRotatef(90,1,0,0);
+    //    DisplayPlane (texturePlane);
+    glPopMatrix();
+
+    if (toggleCam != 2){
+        DrawAxes();
+    }
+
+    glPushMatrix();
+        glRotatef(angleYear,0,1,0);
+        glTranslatef(0,0,-10);
+        glRotatef(angleDay,0,1,0);
+        glRotatef(90,1,0,0);
+    glPopMatrix();
+
+    glutSwapBuffers();
+}
+
+void init (void) {
+    glEnable(GL_DEPTH_TEST);
+    glEnable( GL_TEXTURE_2D );
+    glEnable(GL_LIGHTING);    //    glShadeModel (GL_FLAT);
+    glShadeModel (GL_SMOOTH);
+
+    glDepthFunc(GL_LEQUAL);
+
+    glEnable(GL_LIGHT0);
+}
+
+void changeCamera(int angle, int w, int h)
 {
-    return sqrt((dX1 - dX0)*(dX1 - dX0) + (dY1 - dY0)*(dY1 - dY0));
+    glMatrixMode (GL_PROJECTION);
+    glLoadIdentity ();
+    gluPerspective (angle,
+            (GLfloat)w / (GLfloat)h, 1, 150.0);
+    glMatrixMode (GL_MODELVIEW);
 }
 
-int hammerTime = 0;
-bool shotFired[10];
-Arena arena;
-XMLConfig config;
-Helicopter player;
-vector<Shot> playerShots;
-vector<Shot> enemyShots;
-vector<Helicopter> enemies;
-bool looksForPlayer = false;
+void reshape (int w, int h) {
 
-void moveEnemies(){
-	static GLdouble previousTime = 0;
-	double currentTime, timeDifference;
-
-	currentTime = glutGet(GLUT_ELAPSED_TIME);
-	timeDifference = currentTime - previousTime;
-	previousTime = currentTime;
-
+    glViewport (0, 0, (GLsizei)w, (GLsizei)h);
+    changeCamera(camAngle, w, h);
 }
 
-void display(void){
-
-	glClear (GL_COLOR_BUFFER_BIT);
-
-		// arena and helicopter
-		glPushMatrix();
-			arena.drawArena(ARENAX, ARENAY);
-		glPopMatrix();
-
-		// checks if end message should be displayed
-		if(!checkDefeat(player, ARENAX/2.0,ARENAY/2.0, enemyShots)
-			&& !checkVictory(player, arena.getObjetosResgate().size(), ARENAX/2.0, ARENAY/2.0)){
-			// shots
-			glPushMatrix();
-				for(int i = 0 ; i < playerShots.size() ; i++){
-					if(!playerShots.at(i).getHitted()){
-						playerShots.at(i).draw();
-					}
-				}
-				if(enemyShots.size() > 0){
-					for(int i = 0 ; i < enemyShots.size() ; i++){
-						if(!enemyShots.at(i).getHitted())
-						enemyShots.at(i).draw();
-					}
-				}
-			glPopMatrix();
-
-			glPushMatrix();
-				player.draw();
-			glPopMatrix();
-			glPushMatrix();
-			for(int i = 0 ; i < enemies.size() ; i++){
-				if(!enemies.at(i).getIsDead()){
-					enemies.at(i).draw();
-				}
-			}
-			glPopMatrix();
-		}
-	glEnd();
-	glutSwapBuffers();
+void mouse_callback(int button, int state, int x, int y)
+{
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+        lastX = x;
+        lastY = y;
+        buttonDown = 1;
+    }
+    if (button == GLUT_RIGHT_BUTTON && state == GLUT_UP) {
+        buttonDown = 0;
+    }
 }
 
-void mouse(int button, int state, int x, int y){
-	if(button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN){
-		player.setFlying();
-	}
-	if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && player.getFlying()){
-		// playerShots.push_back(Shot(player.getGunPosX(),
-		// 							player.getGunPosY(),
-		// 							player.getCurrentAngleGun(),
-		// 							player.getAngle(),
-		// 							player.getVelTiro(),
-		// 							player.getAngleGun()));
-		playerShots.push_back(Shot(player.getGunPosX(),
-									player.getGunPosY(),
-									player.getCurrentAngleGun(),
-									player.getAngle(),
-									player.getVelTiro(),
-									player.getAngleGun()));
-	}
+void mouse_motion(int x, int y)
+{
+    if (!buttonDown)
+        return;
+
+    camXYAngle += x - lastX;
+    camXZAngle += y - lastY;
+
+    camXYAngle = (int)camXYAngle % 360;
+    camXZAngle = (int)camXZAngle % 360;
+
+    lastX = x;
+    lastY = y;
 }
 
-void idle(){
-	static GLdouble previousTime = 0;
-    GLdouble currentTime;
-    GLdouble timeDifference;
+void idle()
+{
+    angleDay+=5;
+    angleYear++;
+    angleDay = (int)angleDay%360;
+    angleYear = (int)angleYear%360;
 
-    currentTime = glutGet(GLUT_ELAPSED_TIME);
-    timeDifference = currentTime - previousTime;
-    previousTime = currentTime;
-	float velPlayer = -player.getVelHelicoptero() * timeDifference;
-
-	// key control
-	if(keys['a'] == 1 || keys['A'] == 1) player.rotate(velPlayer);
-	if(keys['d'] == 1 || keys['D'] == 1) player.rotate(velPlayer * -1);
-	if(keys['w'] == 1 || keys['W'] == 1){
-		// checks if next position exceeds boudaries
-		if(!onArena(player, arena.getArena(), velPlayer)){
-			if(!onPlayer(player, enemies.at(0)) &&
-				!onPlayer(player, enemies.at(1)) &&
-				!onPlayer(player, enemies.at(2))){
-					player.moveY(velPlayer);
-				}else{
-					player.moveY(-velPlayer);
-				}
-		}
-	}
-	if(keys['s'] == 1 || keys['S'] == 1){
-		// checks if next position exceeds boudaries
-		if(!onArena(player, arena.getArena(), velPlayer))
-		if(!onPlayer(player, enemies.at(0)) &&
-			!onPlayer(player, enemies.at(1)) &&
-			!onPlayer(player, enemies.at(2))){
-				player.moveY(-velPlayer);
-			}else{
-				player.moveY(velPlayer);
-			}
-	}
-	if(keys['+'] == 1) player.moveHelice(0.1 * timeDifference);
-	if(keys['-'] == 1) player.moveHelice(-0.1 * timeDifference);
-
-	// enemies conditional movement
-	int r = (rand() % 10) ;
-	for(int i = 0; i < enemies.size() ; i++){
-		if(!enemies.at(i).getIsDead()){
-			if(hammerTime == 0){
-				float rndm = 40 + (rand() % (int)(80 - 40 + 1));
-				float vel = -enemies.at(i).getVelHelicoptero() * timeDifference;
-				bool arenaCollision = onArena(enemies.at(i), arena.getArena(), vel);
-				bool isCollided = enemies.at(i).getCollided();
-				int collidedWithEnemy = onEnemy(enemies, i);
-				int collidedWithPlayer = onPlayer(player,enemies.at(i));
-
-				// normal movement
-				if(!arenaCollision && collidedWithEnemy == -1 && !collidedWithPlayer){
-					enemies.at(i).moveY(vel);
-					enemies.at(i).rotate(-vel/4);
-				}
-
-				// arena collision
-				if(arenaCollision && collidedWithEnemy == -1 && !collidedWithPlayer){
-					enemies.at(i).rotate(enemies.at(i).getVelHelicoptero() * timeDifference);
-				}
-
-				// arena and enemy collision
-				if(arenaCollision && collidedWithEnemy != -1 && !collidedWithPlayer){
-					enemies.at(i).rotate(vel);
-				}
-
-				// enemy collision
-				if(!arenaCollision && collidedWithEnemy != -1 && !collidedWithPlayer){
-					if(willCollide(enemies.at(i), enemies.at(collidedWithEnemy), vel) != -1){
-						enemies.at(collidedWithEnemy).moveY(vel/6);
-						enemies.at(collidedWithEnemy).rotate(vel *2);
-					}
-				}
-
-				// player collision only
-				if(!arenaCollision && collidedWithPlayer && collidedWithEnemy == -1){
-					if(willCollide(player, enemies.at(i), vel) != -1){
-						player.setCollided(true);
-						enemies.at(i).moveY(vel/2);
-						enemies.at(i).rotate(vel * 3);
-					}
-				}
-			}
-			if(hammerTime == 1){
-				float angleEnemy = enemies.at(i).getAngle();
-				float enemyX = enemies.at(i).getGunPosX();
-				float enemyY = enemies.at(i).getGunPosY();
-				float enemyXFar = (enemyX - 2000) * (cos(( 90 + enemies.at(i).getAngle()) * 3.1415/180.0));
-				float enemyYFar = (enemyY - 2000) * (sin(( 90 + enemies.at(i).getAngle()) * 3.1415/180.0));
-				float playerX = player.getGunPosX();
-				float playerY = player.getGunPosY();
-				float d1 = Distance(enemyX,enemyY,playerX,playerY);
-				float d2 = Distance(playerX,playerY,
-									(enemyX - 2000) * (cos(( 90 + enemies.at(i).getAngle()) * 3.1415/180.0)),
-									(enemyY - 2000) * (sin(( 90 + enemies.at(i).getAngle()) * 3.1415/180.0)));
-				float d3 = Distance( enemyX,enemyY,
-									(enemyX - 2000) * (cos(( 90 + enemies.at(i).getAngle()) * 3.1415/180.0)),
-									(enemyY - 2000) * (sin(( 90 + enemies.at(i).getAngle()) * 3.1415/180.0)));
-				if(d1 + d2 < d3 +1.0 && d1 + d2 > d3 - 1.0 && !shotFired[i]){
-						enemyShots.push_back(Shot(enemies.at(i).getGunPosX(),
-														enemies.at(i).getGunPosY(),
-														enemies.at(i).getAngle(),
-														enemies.at(i).getAngle(),
-														enemies.at(i).getVelTiro(),
-														enemies.at(i).getAngleGun()));
-						shotFired[i] = true;
-				}else{
-					enemies.at(i).rotate(-velPlayer);
-				}
-			}
-		}
-	}
-
-	bool everybodyShot = true;
-	for(int i = 0 ; i < enemies.size() ; i++){
-		if(!shotFired[i]) everybodyShot = false;
-	}
-	if(everybodyShot){
-		for(int i = 0; i < enemies.size(); i++){
-			shotFired[i] = false;
-		}
-		hammerTime = 0;
-	}
-
-	// shot collision
-	for(int i = 0 ; i < enemies.size() ; i++){
-		int shot = wasShot(enemies.at(i), playerShots);
-		if(shot != -1){
-			//isDead = true, player isn't drawn anymore nor shoots
-			enemies.at(i).setIsDead(true);
-			// hitted= true for the shot, so it isn't drawn anymore
-			playerShots.at(shot).setHitted(true);
-		}
-	}
-
-	// rescue
-	for(int i = 0; i < arena.getObjetosResgate().size() ; i++){
-		// collision happende and object wasn't collected yet
-		if(!arena.getObjetosResgate().at(i).getCollected()
-			&& onObjetoResgate(player, arena.getObjetosResgate().at(i))){
-			arena.collect(i);
-			player.setRescuedObjects(player.getRescuedObjects() + 1 );
-		}
-	}
-
-	// refuels
-	if(!player.getFlying() && onPosto(player, arena.getPostoAbastecimento())){
-		player.setGas(player.getTempoDeVoo() + 1);
-	}
-
-	glutPostRedisplay();
+    glutPostRedisplay();
 }
 
-void timerEnemyMovement(int value){
-	// int nextMove = (4 + rand() % (int)(6 - 4 + 1)) * 1000;
-	// int directionMove = pow(-1,(1 + rand() % (int)(2 - 1 + 1)));
-	// static GLdouble previousTime = 0;
-	// double currentTime, timeDifference;
-	// currentTime = glutGet(GLUT_ELAPSED_TIME);
-	// timeDifference = currentTime - previousTime;
-	// previousTime = currentTime;
-	//
-	//
-	// for(int i = 0 ; i < enemies.size() ; i++){
-	// 	enemies.at(i).setAngle(-90);
-	// 	enemies.at(i).setDirection(directionMove);
-	// }
-	// glutTimerFunc(3000,timerEnemyMovement,0);
+void keyboard(unsigned char key, int x, int y)
+{
+    static bool textureEnebled = true;
+    static bool lightingEnebled = true;
+    static bool smoothEnebled = true;
+    switch (key) {
+        case '0':
+            toggleCam = 0;
+            break;
+        case '1':
+            toggleCam = 1;
+            break;
+        case '2':
+            toggleCam = 2;
+            break;
+        case 't':
+            if ( textureEnebled ){
+                glDisable( GL_TEXTURE_2D );
+            }else{
+                glEnable( GL_TEXTURE_2D );
+            }
+            textureEnebled = !textureEnebled;
+            break;
+        case 'l':
+            if ( lightingEnebled ){
+                glDisable( GL_LIGHTING );
+            }else{
+                glEnable( GL_LIGHTING );
+            }
+            lightingEnebled = !lightingEnebled;
+            break;
+        case 's':
+            if ( smoothEnebled ){
+                glShadeModel (GL_FLAT);
+            }else{
+                glShadeModel (GL_SMOOTH);
+            }
+            smoothEnebled = !smoothEnebled;
+            break;
+        case '+':
+        {
+            int inc = camAngle >= 180 ? 0 : 1;
+            camAngle += inc;
+            changeCamera(camAngle,
+                    glutGet(GLUT_WINDOW_WIDTH),
+                    glutGet(GLUT_WINDOW_HEIGHT));
+            break;
+        }
+        case '-':
+        {
+            int inc = camAngle <= 5 ? 0 : 1;
+            camAngle -= inc;
+            changeCamera(camAngle, glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
+            break;
+        }
+        case 27:
+            exit(0);
+            break;
+    }
 }
 
-void timerGasBar(int value){
-	// on posto
-	if(player.getFlying() || !onPosto(player, arena.getPostoAbastecimento())){
-		player.decGas();
-	}
+int main (int argc, char **argv) {
 
-	glutTimerFunc((1000),timerGasBar,0);
-	glutPostRedisplay();
-}
+    glutInit (&argc, argv);
+    glutInitDisplayMode (GLUT_DOUBLE | GLUT_DEPTH);
+    glutInitWindowSize (700, 700);
+    glutInitWindowPosition  (100,0);
+    glutCreateWindow ("Trabalho Final");
+    init();
+    glutDisplayFunc (idle);
+    glutIdleFunc (display);
+    glutReshapeFunc (reshape);
 
-void timerEnemyShooting(int value){
+    glutKeyboardFunc(keyboard);
 
-	if(hammerTime == 0){
-		hammerTime = 1;
+    glutMotionFunc(mouse_motion);
+    glutMouseFunc(mouse_callback);
 
-	} else{
-		hammerTime = 0;
-	}
+    glutMainLoop ();
 
-	glutTimerFunc(1/enemies.at(0).getFreqTiro(),timerEnemyShooting,200);
-	glutPostRedisplay();
-}
-
-float mouseX = 0.0;
-void motion(int x, int y){
-
-	static GLdouble previousTime = 0;
-    GLdouble currentTime;
-    GLdouble timeDifference;
-    currentTime = glutGet(GLUT_ELAPSED_TIME);
-    timeDifference = currentTime - previousTime;
-    previousTime = currentTime;
-
-	if(mouseX < x ) player.rotateGun(timeDifference* 0.1);
-	if(mouseX > x )	player.rotateGun(timeDifference* -0.1);
-	mouseX = x;
-}
-
-int main(int argc, char* argv[]){
-	char path[255];
-	if(argc != 2){
-		cout << "Running at default path './config/config.xml'..." << endl;
-		strcpy(path, "config.xml");
-	}else{
-		strcpy(path, argv[1]);
-		strcat(path, "config.xml");
-	}
-	srand(time(NULL));
-
-	config.readXML(path);
-	arena.readXMLArena((config.getArena().getPath() + config.getArena().getName() + "." + config.getArena().getExtension()).c_str());
-	player = config.readHelicopterConfig(path);
-	player.setArena(ARENAX, ARENAY);
-
-	enemies.push_back(config.readEnemyHelicopter(path, ARENAX/100 * 90, ARENAY/100 * 10));
-	enemies.push_back(config.readEnemyHelicopter(path, ARENAX/100 * 90, ARENAY/100 * 90));
-	enemies.push_back(config.readEnemyHelicopter(path, ARENAX/100 * 10, ARENAY/100 * 90));
-
-	for(int i = 0; i < 10; i++){
-		shotFired[i] = false;
-	}
-
-	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-	glutInitWindowSize(ARENAX,ARENAY);
-	glutInitWindowPosition(0, 0);
-	glutCreateWindow("Arena");
-	init(ARENAX, ARENAY);
-	glutDisplayFunc(display);
-	glutMouseFunc(mouse);
-	glutIdleFunc(idle);
-	glutKeyboardFunc(setKeyDown);
-	glutKeyboardUpFunc(setKeyUp);
-
-	//timers
-	glutTimerFunc(1000, timerGasBar, 0);
-	// glutTimerFunc(4000,timerEnemyMovement,0);
-	glutTimerFunc(1/enemies.at(0).getFreqTiro(),timerEnemyShooting,200);
-
-	glutPassiveMotionFunc(motion);
-	glutMainLoop();
-
+    return 0;
 }

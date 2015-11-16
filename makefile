@@ -1,26 +1,8 @@
-all: clearsc compile
-
-compile:
-	g++ -c File.cpp
-	g++ -c Arena.cpp
-	g++ -c XMLConfig.cpp
-	g++ -c Circle.cpp
-	g++ -c Rect.cpp
-	g++ -c Utils.cpp
-	g++ -c Helicopter.cpp
-	g++ -c Shot.cpp
-	g++ -c tinyxml2.cpp
-	g++ -otrabalhocg main.cpp XMLConfig.o File.o Rect.o Circle.o tinyxml2.o Arena.o Utils.o Helicopter.o Shot.o -lGL -lGLU -lglut -lm
-
-run:
-	./trabalhocg
-
-clean:
-	find . -name '*~' -exec rm {} \;
-	rm *.o
-	rm trabalhocg
-
-clearsc:
+all:
 	clear
-
-dev: clearsc compile run
+	g++ -o teste imageloader.cpp Cube.cpp main.cpp -lGL -lGLU -lglut -lm
+	./teste
+run:
+	./teste
+clean:
+	rm -rf *o trabalhocg
