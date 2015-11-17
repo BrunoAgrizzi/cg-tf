@@ -19,6 +19,9 @@ extern const float darkgreen[];
 
 extern int keys[256];
 
+void drawAxes();
+void setKeyUp(unsigned char key, int x, int j);
+void setKeyDown(unsigned char key, int x, int j);
 // void init (float arenaX, float arenaY);
 // void setKeyUp(unsigned char key, int x, int j);
 // void setKeyDown(unsigned char key, int x, int j);

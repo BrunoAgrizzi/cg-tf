@@ -9,11 +9,10 @@ using namespace std;
 Cube::Cube(){}
 
 void Cube::draw(){
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, this->materialColor);
     glPushMatrix();
-        // TODO: make color dynamic
-        glColor3f(1,0,0);
-        glScalef(this->scaleX, this->scaleY, this->scaleZ);
         glTranslatef(this->transX, this->transY, this->transZ);
+        glScalef(this->scaleX, this->scaleY, this->scaleZ);
         glutSolidCube(1.0);
     glPopMatrix();
 }
@@ -32,4 +31,11 @@ void Cube::setTranslation(float tx, float ty, float tz){
 
 void Cube::setRotation(float angle){
     this->rotationAngle = angle;
+}
+
+void Cube::setColor(float r, float g, float b, float q){
+    this->materialColor[0] = r;
+    this->materialColor[1] = g;
+    this->materialColor[2] = b;
+    this->materialColor[4] = q;
 }

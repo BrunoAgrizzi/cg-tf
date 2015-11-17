@@ -13,6 +13,7 @@ private:
     float scaleX, scaleY, scaleZ;
     float transX, transY, transZ;
     float rotationAngle;
+    float materialColor[4];
 public:
 
     // default constructor
@@ -25,6 +26,8 @@ public:
     void setTranslation(float tx, float ty, float tz);
 
     void setRotation(float angle);
+
+    void setColor(float r, float g, float b, float q);
 
     // x, y: cube's center will be drawn at these positions
     void draw();

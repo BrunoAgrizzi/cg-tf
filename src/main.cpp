@@ -7,16 +7,15 @@
 #include <string.h>
 #include "XMLConfig.h"
 #include "Arena.h"
+#include "Utils.h"
 
 XMLConfig config;
 Arena arena;
-
+Helicopter player;
 
 GLuint textureEarth;
 GLuint textureSun;
 GLuint texturePlane;
-double angleDay = 0;
-double angleYear = 0;
 
 //Camera controls
 double camDist=50;
@@ -32,91 +31,104 @@ int buttonDown=0;
 
 void DrawAxes(){
 
-    GLfloat materialEmission[] = { 1.00, 1.00, 0.00, 1};
-    GLfloat materialColor[] = { 1.0, 1.0, 0.0, 1};
-    GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1};
-    GLfloat mat_shininess[] = { 50.0 };
+    // GLfloat materialEmission[] = { 1.00, 0.00, 0.00, 1};
+    GLfloat materialColor[] = { 1.0, 0.0, 0.0, 1};
+    // GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1};
+    // GLfloat mat_shininess[] = { 50.0 };
 
 
-    glMaterialfv(GL_FRONT, GL_EMISSION, materialEmission);
+    // glMaterialfv(GL_FRONT, GL_EMISSION, materialEmission);
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, materialColor);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+    // glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+    // glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
 
-    GLfloat mat_ambient_r[] = { 1.0, 0.0, 0.0, 1.0 };
-    GLfloat mat_ambient_g[] = { 0.0, 1.0, 0.0, 1.0 };
-    GLfloat mat_ambient_b[] = { 0.0, 0.0, 1.0, 1.0 };
+    // GLfloat mat_ambient_r[] = { 1.0, 0.0, 0.0, 1.0 };
+    // GLfloat mat_ambient_g[] = { 0.0, 1.0, 0.0, 1.0 };
+    // GLfloat mat_ambient_b[] = { 0.0, 0.0, 1.0, 1.0 };
 
-    glPushAttrib(GL_ENABLE_BIT);
-        glDisable(GL_LIGHTING);
-        glDisable(GL_TEXTURE_2D);
+    // glPushAttrib(GL_ENABLE_BIT);
+        // glDisable(GL_LIGHTING);
+        // glDisable(GL_TEXTURE_2D);
 
-        glPushMatrix();
-            Cube c = Cube();
-            c.setScale(5,5,5);
-            c.setTranslation(0.5,0,0);
-            c.draw();
-        glPopMatrix();
+        // glPushMatrix();
+        //     Cube c = Cube();
+        //     c.setColor(1,0,1,1);
+        //     c.setScale(5,5,5);
+        //     c.setTranslation(0.5,0,0);
+        //     c.draw();
+        // glPopMatrix();
 
-        glPopAttrib();
+        // glPopAttrib();
 
 }
 
 
-void display (void) {
-    glClearColor (0.0,0.0,0.0,1.0);
+void display (void){
+    // glClearColor (0.0,0.0,0.0,0.0);
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
-    // camera inicia a uma distancia do obj
     glTranslatef(0,0,-camDist);
     glRotatef(camXZAngle,1,0,0);
     glRotatef(camXYAngle,0,1,0);
+    // camera inicia a uma distancia do obj
 
+    //
+    // GLfloat light_position[] = { 0.0, 0.0, 0.0, 1.0 };
+    // glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+    //
+    // glEnable(GL_LIGHT1);
+    // GLfloat light_position1[] = { 70.0, 70.0, 0.0, 1.0 };
+    // GLfloat light1[] = {1,1,1,1};
+    // glLightfv(GL_LIGHT1, GL_POSITION, light_position1);
+    // glLightfv(GL_LIGHT1, GL_DIFFUSE, light1);
 
-    GLfloat light_position[] = { 0.0, 0.0, 0.0, 1.0 };
-    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-
- //    glEnable(GL_LIGHT1);
- //    GLfloat light_position1[] = { 70.0, 70.0, 0.0, 1.0 };
- //    GLfloat light1[] = {1,1,1,1};
- //    glLightfv(GL_LIGHT1, GL_POSITION, light_position1);
- //    glLightfv(GL_LIGHT1, GL_DIFFUSE, light1);
-
-    glPushMatrix();
-        glScalef(70,70,1);
-        glTranslatef(0,0,-12);
-        glRotatef(90,1,0,0);
+    // glPushMatrix();
+    //     glScalef(70,70,1);
+    //     glTranslatef(0,0,-12);
+    //     glRotatef(90,1,0,0);
     //    DisplayPlane (texturePlane);
-    glPopMatrix();
-
-    if (toggleCam != 2){
-        DrawAxes();
-    }
-
+    // glPopMatrix();
+    player.draw();
+    drawAxes();
+    //DrawAxes();
+    glFlush();
     glPushMatrix();
-        glRotatef(angleYear,0,1,0);
-        glTranslatef(0,0,-10);
-        glRotatef(angleDay,0,1,0);
-        glRotatef(90,1,0,0);
+        // glRotatef(angleYear,0,1,0);
+        // glTranslatef(0,0,-10);
+        // glRotatef(angleDay,0,1,0);
+        // glRotatef(90,1,0,0);
     glPopMatrix();
 
     glutSwapBuffers();
 }
 
-void init (void) {
-    glEnable(GL_DEPTH_TEST);
-    glEnable( GL_TEXTURE_2D );
-    glEnable(GL_LIGHTING);    //    glShadeModel (GL_FLAT);
-    glShadeModel (GL_SMOOTH);
+void init (void){
+    // glEnable(GL_DEPTH_TEST);
+    // glEnable( GL_TEXTURE_2D );
+    // glEnable(GL_LIGHTING);    //    glShadeModel (GL_FLAT);
+    // glShadeModel (GL_SMOOTH);
+    //
+    // glDepthFunc(GL_LEQUAL);
+    //
+    // glEnable(GL_LIGHT0);
+    GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+   GLfloat mat_shininess[] = { 100.0 };
+   GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
 
-    glDepthFunc(GL_LEQUAL);
+   glClearColor (0.0, 0.0, 0.0, 0.0);
+   glShadeModel (GL_SMOOTH);
 
-    glEnable(GL_LIGHT0);
+   glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+   glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+   glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+   glEnable(GL_LIGHTING);
+   glEnable(GL_LIGHT0);
+   glEnable(GL_DEPTH_TEST);
 }
 
-void changeCamera(int angle, int w, int h)
-{
+void changeCamera(int angle, int w, int h){
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
     gluPerspective (angle,
@@ -130,8 +142,7 @@ void reshape (int w, int h) {
     changeCamera(camAngle, w, h);
 }
 
-void mouse_callback(int button, int state, int x, int y)
-{
+void mouse_callback(int button, int state, int x, int y){
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
         lastX = x;
         lastY = y;
@@ -142,8 +153,7 @@ void mouse_callback(int button, int state, int x, int y)
     }
 }
 
-void mouse_motion(int x, int y)
-{
+void mouse_motion(int x, int y){
     if (!buttonDown)
         return;
 
@@ -157,75 +167,19 @@ void mouse_motion(int x, int y)
     lastY = y;
 }
 
-void idle()
-{
-    angleDay+=5;
-    angleYear++;
-    angleDay = (int)angleDay%360;
-    angleYear = (int)angleYear%360;
+void idle(){
+    if(keys['a'] == 1 || keys['A'] == 1) player.rotate(0.5);
+    if(keys['d'] == 1 || keys['D'] == 1) player.rotate(0.5 * -1);
 
     glutPostRedisplay();
 }
 
 void keyboard(unsigned char key, int x, int y)
 {
-    static bool textureEnebled = true;
-    static bool lightingEnebled = true;
-    static bool smoothEnebled = true;
-    switch (key) {
-        case '0':
-            toggleCam = 0;
-            break;
-        case '1':
-            toggleCam = 1;
-            break;
-        case '2':
-            toggleCam = 2;
-            break;
-        case 't':
-            if ( textureEnebled ){
-                glDisable( GL_TEXTURE_2D );
-            }else{
-                glEnable( GL_TEXTURE_2D );
-            }
-            textureEnebled = !textureEnebled;
-            break;
-        case 'l':
-            if ( lightingEnebled ){
-                glDisable( GL_LIGHTING );
-            }else{
-                glEnable( GL_LIGHTING );
-            }
-            lightingEnebled = !lightingEnebled;
-            break;
-        case 's':
-            if ( smoothEnebled ){
-                glShadeModel (GL_FLAT);
-            }else{
-                glShadeModel (GL_SMOOTH);
-            }
-            smoothEnebled = !smoothEnebled;
-            break;
-        case '+':
-        {
-            int inc = camAngle >= 180 ? 0 : 1;
-            camAngle += inc;
-            changeCamera(camAngle,
-                    glutGet(GLUT_WINDOW_WIDTH),
-                    glutGet(GLUT_WINDOW_HEIGHT));
-            break;
-        }
-        case '-':
-        {
-            int inc = camAngle <= 5 ? 0 : 1;
-            camAngle -= inc;
-            changeCamera(camAngle, glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
-            break;
-        }
-        case 27:
-            exit(0);
-            break;
-    }
+    // switch for the keys vector
+
+    // switch 2
+
 }
 
 int main (int argc, char **argv) {
@@ -239,6 +193,10 @@ int main (int argc, char **argv) {
 
     config.readXML(path);
     arena.readXMLArena((config.getArena().getPath() + config.getArena().getName() + "." + config.getArena().getExtension()).c_str());
+    player = config.readHelicopterConfig(path);
+
+
+
 
     glutInit (&argc, argv);
     glutInitDisplayMode (GLUT_DOUBLE | GLUT_DEPTH);
@@ -249,9 +207,11 @@ int main (int argc, char **argv) {
     glutDisplayFunc (idle);
     glutIdleFunc (display);
     glutReshapeFunc (reshape);
-    glutKeyboardFunc(keyboard);
+    // glutKeyboardFunc(keyboard);
     glutMotionFunc(mouse_motion);
     glutMouseFunc(mouse_callback);
+    glutKeyboardFunc(setKeyDown);
+	glutKeyboardUpFunc(setKeyUp);
 
     glutMainLoop ();
 

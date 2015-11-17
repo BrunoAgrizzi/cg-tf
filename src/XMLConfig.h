@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <string>
 #include "File.h"
-// #include "Helicopter.h"
+#include "Helicopter.h"
 
 using namespace std;
 
@@ -14,12 +14,11 @@ class XMLConfig{
 	private:
 		File arena;
 	public:
-
 		XMLConfig();
 		File getArena();
 		void readXML(const char* path);
-		// Helicopter readHelicopterConfig(const char * path);
-		// Helicopter readEnemyHelicopter(const char* path, float cx, float cy);
+		Helicopter readHelicopterConfig(const char * path);
+		Helicopter readEnemyHelicopter(const char* path, float cx, float cy);
 };
 
 #endif

@@ -13,6 +13,130 @@ const float darkred[] = {0.8,0.0,0.0};
 const float darkgreen[] = {0.0,0.8,0.0};
 
 int keys[256];
+
+void drawAxes(){
+	GLfloat mat_ambient_r[] = { 1.0, 0.0, 0.0, 1.0 };
+	GLfloat mat_ambient_g[] = { 0.0, 1.0, 0.0, 1.0 };
+	GLfloat mat_ambient_b[] = { 0.0, 0.0, 1.0, 1.0 };
+
+	glPushAttrib(GL_ENABLE_BIT);
+	glDisable(GL_LIGHTING);
+	glDisable(GL_TEXTURE_2D);
+
+	   //x axis
+	   glPushMatrix();
+	   		glColor3fv(mat_ambient_r);
+		   glScalef(5, 0.3, 0.3);
+		   glTranslatef(0.5, 0, 0); // put in one end
+		   glutSolidCube(1.0);
+	   glPopMatrix();
+
+	   //y axis
+	   glPushMatrix();
+		   glColor3fv(mat_ambient_g);
+		   glRotatef(90,0,0,1);
+		   glScalef(5, 0.3, 0.3);
+		   glTranslatef(0.5, 0, 0); // put in one end
+		   glutSolidCube(1.0);
+	   glPopMatrix();
+
+	   //z axis
+	   glPushMatrix();
+		   glColor3fv(mat_ambient_b);
+		   glRotatef(-90,0,1,0);
+		   glScalef(5, 0.3, 0.3);
+		   glTranslatef(0.5, 0, 0); // put in one end
+		   glutSolidCube(1.0);
+	   glPopMatrix();
+   glPopAttrib();
+}
+
+void setKeyUp(unsigned char key, int x, int j){
+	// static bool textureEnebled = true;
+    // static bool lightingEnebled = true;
+    // static bool smoothEnebled = true;
+    // switch (key) {
+    //     case '0':
+    //         toggleCam = 0;
+    //         break;
+    //     case '1':
+    //         toggleCam = 1;
+    //         break;
+    //     case '2':
+    //         toggleCam = 2;
+    //         break;
+    //     case 't':
+    //         if ( textureEnebled ){
+    //             glDisable( GL_TEXTURE_2D );
+    //         }else{
+    //             glEnable( GL_TEXTURE_2D );
+    //         }
+    //         textureEnebled = !textureEnebled;
+    //         break;
+    //     case 'l':
+    //         if ( lightingEnebled ){
+    //             glDisable( GL_LIGHTING );
+    //         }else{
+    //             glEnable( GL_LIGHTING );
+    //         }
+    //         lightingEnebled = !lightingEnebled;
+    //         break;
+    //     case 's':
+    //         if ( smoothEnebled ){
+    //             glShadeModel (GL_FLAT);
+    //         }else{
+    //             glShadeModel (GL_SMOOTH);
+    //         }
+    //         smoothEnebled = !smoothEnebled;
+    //         break;
+    //     case '+':
+    //     {
+    //         int inc = camAngle >= 180 ? 0 : 1;
+    //         camAngle += inc;
+    //         changeCamera(camAngle,
+    //                 glutGet(GLUT_WINDOW_WIDTH),
+    //                 glutGet(GLUT_WINDOW_HEIGHT));
+    //         break;
+    //     }
+    //     case '-':
+    //     {
+    //         int inc = camAngle <= 5 ? 0 : 1;
+    //         camAngle -= inc;
+    //         changeCamera(camAngle, glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
+    //         break;
+    //     }
+    //     case 27:
+    //         exit(0);
+    //         break;
+    // }
+
+	switch(key){
+		case 27: exit(0); break;
+		case 'a': case 'A':	keys['a'] = 0; break;
+		case 'D': case 'd':	keys['d'] = 0; break;
+		case 'w': case 'W': keys['w'] = 0; break;
+		case 'S': case 's': keys['s'] = 0; break;
+		// case '+': keys['+'] = 0; break;
+		// case '-': keys['-'] = 0; break;
+		break;
+	}
+	glutPostRedisplay();
+}
+
+void setKeyDown(unsigned char key, int x, int j){
+	switch(key){
+		case 'a': case 'A':	keys['a'] = 1; break;
+		case 'D': case 'd':	keys['d'] = 1; break;
+		case 'w': case 'W': keys['w'] = 1; break;
+		case 'S': case 's': keys['s'] = 1; break;
+		// case '+': keys['+'] = 1; break;
+		// case '-': keys['-'] = 1; break;
+		break;
+	}
+	glutPostRedisplay();
+}
+
+
 /*
 void init (float arenaX, float arenaY){
 	glClearColor (0.0, 0.0, 0.0, 0.0);
