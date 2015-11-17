@@ -47,12 +47,12 @@ public:
 	Helicopter(float velTiro, float velHelicoptero, float tempoDeVoo);
 	void draw();
 	void rotate(GLfloat value);
+	void move(GLfloat value);
 	// void drawEnemy();
     //
 	// void moveHelice(float value);
 	// Rect getGun();
 	// void moveX(GLfloat value);
-	// void moveY(GLfloat value);
 	// void rotateGun(float value);
 	// void setFlying();
 	// float getCurrentAngleGun();

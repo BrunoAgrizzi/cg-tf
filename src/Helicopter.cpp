@@ -40,11 +40,11 @@ Helicopter::Helicopter(float velTiro, float velHelicoptero, float tempoDeVoo){
 	this->velHelicoptero = velHelicoptero;
 	this->tempoDeVoo = tempoDeVoo;
 	this->angle = 0;
-	// cX = initialX;
-	// cY = initialY;
+	cX = 0;
+	cY = 0;
 	// gas = tempoDeVoo;
-	// gX = 0.0;
-	// gY = 0.0;
+	gX = 0.0;
+	gY = 0.0;
 	// angle = 0.0;
 	// flying = false;
 	// velHelice = 0.0;
@@ -62,13 +62,6 @@ void drawHelicopter(){
 	const float baseTx = 0, baseTy = 0, baseTz = 0;
 	const float tailSx = 7, tailSy = 1, tailSz = 1;
 	const float tailTx = baseSx, tailTy = 0, tailTz = 0;
-
-	// const float baseTrans[] = {0,0,0};
-	// const float tailScale[] = {7,1,1};
-	// const float tailTrans[] = {1,0,0};
-	// const float smallerTailScale[] = {3,1,1};
-	// const float smallerTailTrans1[] = {};
-	// const float smallerTailTrans2[] = {};
 
 	glPushMatrix();
         Cube base = Cube();
@@ -92,13 +85,29 @@ void drawHelicopter(){
         leftTail.draw();                    	rightTail.draw();
     glPopMatrix();
 }
+
 void Helicopter::draw(){
 	glPushMatrix();
+		glTranslatef(0+gY,0, 0+gX);
 		glRotatef(angle,0,1,0);
 		drawHelicopter();
 	glPopMatrix();
 }
 
+void Helicopter::rotate(GLfloat value){
+	angle += value;
+}
+
+void Helicopter::move(GLfloat value){
+	// if(flying){
+		this->gX += value * cos(( 90 + angle) * 3.1415/180.0);
+		this->gY += value * sin((angle + 90) * 3.1415/180.0);
+	// }
+}
+
+// void Helicopter::move(GLfloat value){
+//
+// }
 // float Helicopter::getFreqTiro(){return this->freqTiro;}
 // float Helicopter::getVelTiro(){return this->velTiro;}
 // float Helicopter::getVelHelicoptero(){return this->velHelicoptero;}
@@ -141,17 +150,8 @@ void Helicopter::draw(){
 // float Helicopter::getNextMoveY( float val ){
 // 	return this->gY + val * sin(( 90 + angle) * 3.1415/180.0);
 // }
-void Helicopter::rotate(GLfloat value){
-	angle += value;
-}
 // void Helicopter::moveHelice(float value){
 // 	velHelice += value;
-// }
-// void Helicopter::moveY(GLfloat value){
-// 	if(flying){
-// 		this->gX += value * cos(( 90 + angle) * 3.1415/180.0);
-// 		this->gY += value * sin((angle + 90) * 3.1415/180.0);
-// 	}
 // }
 // void Helicopter::setFlying(){
 // 	if(flying){
