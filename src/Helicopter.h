@@ -23,7 +23,7 @@ private:
 	GLfloat gY;
 	float cX, cY;
 	GLfloat angle;
-	// float angleHelice;
+	float angleHelice;
 	// bool flying;
 	// bool isEnemy;
 	// vector<Shot> shots;
