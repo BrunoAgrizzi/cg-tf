@@ -1,3 +1,4 @@
+#include <GL/glut.h>
 #include <string>
 #include <vector>
 #include "Arena.h"
@@ -8,6 +9,30 @@ using namespace std;
 using namespace tinyxml2;
 
 Arena::Arena(){}
+
+void Arena::addTexture(){
+  glEnable(GL_TEXTURE_2D);
+  glPushMatrix();
+    glBegin(GL_QUADS);
+    glNormal3f( 0.0, 0.5, 0.0);
+    glTexCoord2f(0.0, 0.5); glVertex3f(-0.5,  0.5, -0.5);
+    glTexCoord2f(0.0, 0.0); glVertex3f(-0.5,  0.5,  0.5);
+    glTexCoord2f(0.5, 0.0); glVertex3f( 0.5,  0.5,  0.5);
+    glTexCoord2f(0.5, 0.5); glVertex3f( 0.5,  0.5, -0.5);
+    glEnd();
+  glPopMatrix();
+  glDisable(GL_TEXTURE_2D);
+}
+
+void Arena::drawArena(){
+  glPushMatrix();
+  glColor3f(0.0,1.0,0.0);
+  glTranslatef(0.0,0.0,0.0);
+  glScalef(1*this->arena.getWidth(),0,1*this->arena.getWidth());
+  addTexture();(1.0);
+  glPopMatrix();
+}
+
 
 // void Arena::drawArena(float x, float y){
 // 	glPushMatrix();

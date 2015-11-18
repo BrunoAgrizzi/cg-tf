@@ -22,6 +22,8 @@ class Arena{
 	public:
 		Arena();
 		void readXMLArena(const char* path);
+		void addTexture();
+		void drawArena();
 		// Rect getArena();
 		// Rect getPostoAbastecimento();
 		// Circle getJogador();

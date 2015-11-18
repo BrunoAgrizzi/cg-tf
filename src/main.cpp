@@ -89,6 +89,7 @@ void display (void){
     //     glRotatef(90,1,0,0);
     //    DisplayPlane (texturePlane);
     // glPopMatrix();
+    arena.drawArena();
     player.draw();
     drawAxes();
     //DrawAxes();
