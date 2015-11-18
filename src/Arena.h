@@ -18,12 +18,15 @@ class Arena{
 		Circle jogador;
 		vector<Circle> inimigos;
 		vector<Circle> objetosResgate;
+		GLuint texture;
 
 	public:
 		Arena();
 		void readXMLArena(const char* path);
 		void addTexture();
 		void drawArena();
+		GLuint getTexture();
+		void setTexture(GLuint tex);
 		// Rect getArena();
 		// Rect getPostoAbastecimento();
 		// Circle getJogador();

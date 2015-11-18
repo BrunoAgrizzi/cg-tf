@@ -27,140 +27,80 @@ int lastX = 0;
 int lastY = 0;
 int buttonDown=0;
 
-//GLuint LoadTextureRAW( const char * filename );
+GLuint LoadTextureRAW( const char * filename );
 
-void DrawAxes(){
-
-    // GLfloat materialEmission[] = { 1.00, 0.00, 0.00, 1};
-    GLfloat materialColor[] = { 1.0, 0.0, 0.0, 1};
-    // GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1};
-    // GLfloat mat_shininess[] = { 50.0 };
-
-
-    // glMaterialfv(GL_FRONT, GL_EMISSION, materialEmission);
-    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, materialColor);
-    // glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-    // glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
-
-    // GLfloat mat_ambient_r[] = { 1.0, 0.0, 0.0, 1.0 };
-    // GLfloat mat_ambient_g[] = { 0.0, 1.0, 0.0, 1.0 };
-    // GLfloat mat_ambient_b[] = { 0.0, 0.0, 1.0, 1.0 };
-
-    // glPushAttrib(GL_ENABLE_BIT);
-        // glDisable(GL_LIGHTING);
-        // glDisable(GL_TEXTURE_2D);
-
-        // glPushMatrix();
-        //     Cube c = Cube();
-        //     c.setColor(1,0,1,1);
-        //     c.setScale(5,5,5);
-        //     c.setTranslation(0.5,0,0);
-        //     c.draw();
-        // glPopMatrix();
-
-        // glPopAttrib();
-
-}
-
-// GLfloat n[6][3] = {  /* Normals for the 6 faces of a cube. */
-//   {-1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {1.0, 0.0, 0.0},
-//   {0.0, -1.0, 0.0}, {0.0, 0.0, 1.0}, {0.0, 0.0, -1.0} };
-// GLint faces[6][4] = {  /* Vertex indices for the 6 faces of a cube. */
-//   {0, 1, 2, 3}, {3, 2, 6, 7}, {7, 6, 5, 4},
-//   {4, 5, 1, 0}, {5, 6, 2, 1}, {7, 4, 0, 3} };
-// GLfloat v[8][3];  /* Will be filled in with X,Y,Z vertexes. */
 
 void display (void){
-    // glClearColor (0.0,0.0,0.0,0.0);
+
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
+
+    GLfloat light_diffuse[] = {1.0, 1.0, 1.0, 1.0};  /* white diffuse light. */
+    GLfloat light_position[] = {0.0, 0.0, 1.0, 0.0};  /* Infinite light location. */
+    //glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+    glPushMatrix();
+    glTranslatef(0.0, 10.0, 10.0);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+    glPopMatrix();
 
     glTranslatef(0,0,-camDist);
     glRotatef(camXZAngle,1,0,0);
     glRotatef(camXYAngle,0,1,0);
-    // camera inicia a uma distancia do obj
 
-    //
-    // GLfloat light_position[] = { 0.0, 0.0, 0.0, 1.0 };
-    // glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-    //
-    // glEnable(GL_LIGHT1);
-    // GLfloat light_position1[] = { 70.0, 70.0, 0.0, 1.0 };
-    // GLfloat light1[] = {1,1,1,1};
-    // glLightfv(GL_LIGHT1, GL_POSITION, light_position1);
-    // glLightfv(GL_LIGHT1, GL_DIFFUSE, light1);
+    //GLfloat light_position[] = { 0.0, 0.0, 0.0, 1.0 };
+    //glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 
-    // glPushMatrix();
-    //     glScalef(70,70,1);
-    //     glTranslatef(0,0,-12);
-    //     glRotatef(90,1,0,0);
-    //    DisplayPlane (texturePlane);
-    // glPopMatrix();
-<<<<<<< HEAD
-    arena.drawArena();
-=======
+    //GLfloat light_position1[] = { 70.0, 70.0, 0.0, 1.0 };
+    //GLfloat light1[] = {1,1,1,1};
+    //glLightfv(GL_LIGHT1, GL_POSITION, light_position1);
+    //glLightfv(GL_LIGHT1, GL_DIFFUSE, light1);
 
 
-
->>>>>>> beb993f1b5a1a8c727bd9d9d08fd99d08196e246
-    player.draw();
-    drawAxes();
-    glFlush();
     glPushMatrix();
-        // glRotatef(angleYear,0,1,0);
-        // glTranslatef(0,0,-10);
-        // glRotatef(angleDay,0,1,0);
-        // glRotatef(90,1,0,0);
+    //arena.drawArena();
     glPopMatrix();
+
+    /////////////////////////////////////////////////////player.draw();
+    drawAxes();
+
+    //glDisable(GL_LIGHTING);
+    Cube c = Cube();
+    c.setTexture(textureSun);
+    c.setTranslation(0,0,0);
+    c.setScale(5,5,5);
+    c.draw();
+    //glEnable(GL_LIGHTING);
+
 
     glutSwapBuffers();
 }
 
 void init (void){
 
-    // glEnable(GL_DEPTH_TEST);
-    // glEnable( GL_TEXTURE_2D );
-    // glEnable(GL_LIGHTING);    //    glShadeModel (GL_FLAT);
-    // glShadeModel (GL_SMOOTH);
-    //
-    // glDepthFunc(GL_LEQUAL);
-    //
-    // glEnable(GL_LIGHT0);
-    GLfloat light_diffuse[] = {1.0, 1.0, 1.0, 1.0};  /* white diffuse light. */
-    GLfloat light_position[] = {1.0, 1.0, 1.0, 0.0};  /* Infinite light location. */
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
-    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-    glEnable(GL_LIGHT0);
-    glEnable(GL_LIGHTING);
+     glEnable(GL_DEPTH_TEST);
+     glEnable( GL_TEXTURE_2D );
+     glEnable(GL_LIGHTING);    //    glShadeModel (GL_FLAT);
+     glEnable(GL_LIGHT0);
 
-    glEnable(GL_DEPTH_TEST);
+     glShadeModel (GL_SMOOTH);
+     glDepthFunc(GL_LEQUAL);
 
-    glMatrixMode(GL_PROJECTION);
-    gluPerspective( /* field of view in degree */ 40.0,
-    /* aspect ratio */ 1.0,
-    /* Z near */ 1.0, /* Z far */ 10.0);
-    glMatrixMode(GL_MODELVIEW);
-   //  GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-   // GLfloat mat_shininess[] = { 100.0 };
-   // GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
-   //
-   // glClearColor (0.0, 0.0, 0.0, 0.0);
-   // glShadeModel (GL_SMOOTH);
-   //
-   // glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-   // glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
-   // glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-   //
-   // glEnable(GL_LIGHTING);
-   // glEnable(GL_LIGHT0);
-   // glEnable(GL_DEPTH_TEST);
+    textureSun = LoadTextureRAW( "../img/sun1.bmp" );
+    //texturePlane = LoadTextureRAW( "stars1.bmp" );
+    texturePlane = LoadTextureRAW( "../img/earth.bmp" );
+    arena.setTexture(texturePlane);
+    //setTexture(textureSun);
+
+
+    //glMatrixMode(GL_PROJECTION);
+
+    //glMatrixMode(GL_MODELVIEW);
 }
 
 void changeCamera(int angle, int w, int h){
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
-    gluPerspective (angle,
-            (GLfloat)w / (GLfloat)h, 1, 150.0);
+    gluPerspective (angle,(GLfloat)w / (GLfloat)h, 1, 150.0);
     glMatrixMode (GL_MODELVIEW);
 }
 
@@ -242,4 +182,30 @@ int main (int argc, char **argv) {
     glutMainLoop ();
 
     return 0;
+}
+
+GLuint LoadTextureRAW( const char * filename )
+{
+
+    GLuint texture;
+
+    Image* image = loadBMP(filename);
+
+    glGenTextures( 1, &texture );
+    glBindTexture( GL_TEXTURE_2D, texture );
+    glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,GL_MODULATE );
+    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_LINEAR );
+    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,GL_LINEAR );
+    glTexImage2D(GL_TEXTURE_2D,                //Always GL_TEXTURE_2D
+                             0,                            //0 for now
+                             GL_RGB,                       //Format OpenGL uses for image
+                             image->width, image->height,  //Width and height
+                             0,                            //The border of the image
+                             GL_RGB, //GL_RGB, because pixels are stored in RGB format
+                             GL_UNSIGNED_BYTE, //GL_UNSIGNED_BYTE, because pixels are stored
+                                               //as unsigned numbers
+                             image->pixels);               //The actual pixel data
+    delete image;
+
+    return texture;
 }

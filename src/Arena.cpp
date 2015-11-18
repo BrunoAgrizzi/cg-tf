@@ -11,26 +11,56 @@ using namespace tinyxml2;
 Arena::Arena(){}
 
 void Arena::addTexture(){
-  glEnable(GL_TEXTURE_2D);
-  glPushMatrix();
-    glBegin(GL_QUADS);
-    glNormal3f( 0.0, 0.5, 0.0);
-    glTexCoord2f(0.0, 0.5); glVertex3f(-0.5,  0.5, -0.5);
-    glTexCoord2f(0.0, 0.0); glVertex3f(-0.5,  0.5,  0.5);
-    glTexCoord2f(0.5, 0.0); glVertex3f( 0.5,  0.5,  0.5);
-    glTexCoord2f(0.5, 0.5); glVertex3f( 0.5,  0.5, -0.5);
-    glEnd();
-  glPopMatrix();
-  glDisable(GL_TEXTURE_2D);
+
+  GLfloat materialEmission[] = { 1.0, 1.0, 1.0, 1};
+  GLfloat materialColorA[] = { 0.2, 0.2, 0.2, 1};
+  GLfloat materialColorD[] = { 1.0, 1.0, 1.0, 1};
+  GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1};
+  GLfloat mat_shininess[] = { 100.0 };
+  glColor3f(1,1,1);
+
+  glMaterialfv(GL_FRONT, GL_EMISSION, materialEmission);
+  glMaterialfv(GL_FRONT, GL_AMBIENT, materialColorA);
+  glMaterialfv(GL_FRONT, GL_DIFFUSE, materialColorD);
+  glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+  glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+
+
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT  );//X
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );//Y
+
+  glBindTexture (GL_TEXTURE_2D, this->texture);
+  double textureS = 1; // Bigger than 1, repeat
+  glBegin (GL_QUADS);
+      glNormal3f(0,1,0);
+      glTexCoord2f (0, 0);
+      glVertex3f (-1, 0, -1);
+
+      glNormal3f(0,1,0);
+      glTexCoord2f (0, textureS);
+      glVertex3f (-1, 0, +1);
+
+      glNormal3f(0,1,0);
+      glTexCoord2f (textureS, textureS);
+      glVertex3f (+1, 0, +1);
+
+      glNormal3f(0,1,0);
+      glTexCoord2f (textureS, 0);
+      glVertex3f (+1, 0, -1);
+  glEnd();
 }
 
 void Arena::drawArena(){
-  glPushMatrix();
-  glColor3f(0.0,1.0,0.0);
+  //glColor3f(0.0,1.0,0.0);
   glTranslatef(0.0,0.0,0.0);
-  glScalef(1*this->arena.getWidth(),0,1*this->arena.getWidth());
-  addTexture();(1.0);
-  glPopMatrix();
+  glScalef(this->arena.getWidth(),0,this->arena.getWidth());
+  addTexture();
+}
+void Arena::setTexture(GLuint tex){
+    this->texture = tex;
+}
+GLuint Arena::getTexture(){
+  return this->texture;
 }
 
 

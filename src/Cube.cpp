@@ -31,20 +31,45 @@ Cube::Cube(){
 
 void Cube::draw(){
     int i;
-    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, this->materialColor);
+    GLfloat materialEmission[] = { 1.0, 1.0, 1.0, 1};
+    GLfloat materialColorA[] = { 0.2, 0.2, 0.2, 1};
+    GLfloat materialColorD[] = { 1.0, 1.0, 1.0, 1};
+    GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1};
+    GLfloat mat_shininess[] = { 100.0 };
+    glColor3f(1,1,1);
+
+    /*glMaterialfv(GL_FRONT, GL_EMISSION, materialEmission);
+    glMaterialfv(GL_FRONT, GL_AMBIENT, materialColorA);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, materialColorD);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);*/
+
+
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT  );//X
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );//Y
+
+
+    //glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, this->materialColor);
+    glBindTexture (GL_TEXTURE_2D, texture);
+
     glPushMatrix();
         glTranslatef(this->transX, this->transY, this->transZ);
         glRotatef(this->rotationAngle, 0,1,0);
         glScalef(this->scaleX, this->scaleY, this->scaleZ);
-    for (i = 0; i < 6; i++){
-        glBegin(GL_QUADS);
-            glNormal3fv(&normals[i][0]);
-            glVertex3fv(&vertexes[faces[i][0]][0]);
-            glVertex3fv(&vertexes[faces[i][1]][0]);
-            glVertex3fv(&vertexes[faces[i][2]][0]);
-            glVertex3fv(&vertexes[faces[i][3]][0]);
-        glEnd();
-    }
+
+          for (i = 0; i < 6; i++){
+              glBegin(GL_QUADS);
+                  glNormal3fv(&normals[i][0]);
+                  glTexCoord2f (0, 0);
+                  glVertex3fv(&vertexes[faces[i][0]][0]);
+                  glTexCoord2f (0, 1);
+                  glVertex3fv(&vertexes[faces[i][1]][0]);
+                  glTexCoord2f (1, 1);
+                  glVertex3fv(&vertexes[faces[i][2]][0]);
+                  glTexCoord2f (1, 0);
+                  glVertex3fv(&vertexes[faces[i][3]][0]);
+              glEnd();
+          }
     glPopMatrix();
 
 }
@@ -63,6 +88,12 @@ void Cube::setTranslation(float tx, float ty, float tz){
 
 void Cube::setRotation(float angle){
     this->rotationAngle = angle;
+}
+void Cube::setTexture(GLuint tex){
+    this->texture = tex;
+}
+GLuint Cube::getTexture(){
+  return this->texture;
 }
 
 void Cube::setColor(float r, float g, float b, float q){

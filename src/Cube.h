@@ -12,11 +12,12 @@ using namespace std;
 class Cube{
 private:
     GLfloat normals[6][3], vertexes[8][3];
-    GLint  faces[6][4]; 
+    GLint  faces[6][4];
     float scaleX, scaleY, scaleZ;
     float transX, transY, transZ;
     float rotationAngle;
     float materialColor[4];
+    GLuint texture;
 public:
 
     // default constructor
@@ -31,6 +32,8 @@ public:
     void setRotation(float angle);
 
     void setColor(float r, float g, float b, float q);
+    GLuint getTexture();
+    void setTexture(GLuint tex);
 
     // x, y: cube's center will be drawn at these positions
     void draw();
