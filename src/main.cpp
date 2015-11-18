@@ -169,9 +169,10 @@ void mouse_motion(int x, int y){
 }
 
 void idle(){
-    if(keys['a'] == 1 || keys['A'] == 1) player.rotate(0.5);
-    if(keys['d'] == 1 || keys['D'] == 1) player.rotate(0.5 * -1);
-
+    if(keys['a'] == 1 || keys['A'] == 1) player.rotate(1);
+    if(keys['d'] == 1 || keys['D'] == 1) player.rotate(1 * -1);
+    if(keys['w'] == 1 || keys['W'] == 1) player.move(-0.5);
+    if(keys['s'] == 1 || keys['S'] == 1) player.move(+0.5);
     glutPostRedisplay();
 }
 
@@ -195,9 +196,6 @@ int main (int argc, char **argv) {
     config.readXML(path);
     arena.readXMLArena((config.getArena().getPath() + config.getArena().getName() + "." + config.getArena().getExtension()).c_str());
     player = config.readHelicopterConfig(path);
-
-
-
 
     glutInit (&argc, argv);
     glutInitDisplayMode (GLUT_DOUBLE | GLUT_DEPTH);
