@@ -5,11 +5,14 @@
 #include <vector>
 #include <algorithm>
 #include <string>
+#include <GL/glut.h>
 
 using namespace std;
 
 class Cube{
 private:
+    GLfloat normals[6][3], vertexes[8][3];
+    GLint  faces[6][4]; 
     float scaleX, scaleY, scaleZ;
     float transX, transY, transZ;
     float rotationAngle;

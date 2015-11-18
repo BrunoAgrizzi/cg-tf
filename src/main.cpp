@@ -62,6 +62,13 @@ void DrawAxes(){
 
 }
 
+// GLfloat n[6][3] = {  /* Normals for the 6 faces of a cube. */
+//   {-1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {1.0, 0.0, 0.0},
+//   {0.0, -1.0, 0.0}, {0.0, 0.0, 1.0}, {0.0, 0.0, -1.0} };
+// GLint faces[6][4] = {  /* Vertex indices for the 6 faces of a cube. */
+//   {0, 1, 2, 3}, {3, 2, 6, 7}, {7, 6, 5, 4},
+//   {4, 5, 1, 0}, {5, 6, 2, 1}, {7, 4, 0, 3} };
+// GLfloat v[8][3];  /* Will be filled in with X,Y,Z vertexes. */
 
 void display (void){
     // glClearColor (0.0,0.0,0.0,0.0);
@@ -89,10 +96,15 @@ void display (void){
     //     glRotatef(90,1,0,0);
     //    DisplayPlane (texturePlane);
     // glPopMatrix();
+<<<<<<< HEAD
     arena.drawArena();
+=======
+
+
+
+>>>>>>> beb993f1b5a1a8c727bd9d9d08fd99d08196e246
     player.draw();
     drawAxes();
-    //DrawAxes();
     glFlush();
     glPushMatrix();
         // glRotatef(angleYear,0,1,0);
@@ -105,6 +117,7 @@ void display (void){
 }
 
 void init (void){
+
     // glEnable(GL_DEPTH_TEST);
     // glEnable( GL_TEXTURE_2D );
     // glEnable(GL_LIGHTING);    //    glShadeModel (GL_FLAT);
@@ -113,20 +126,34 @@ void init (void){
     // glDepthFunc(GL_LEQUAL);
     //
     // glEnable(GL_LIGHT0);
-    GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-   GLfloat mat_shininess[] = { 100.0 };
-   GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
+    GLfloat light_diffuse[] = {1.0, 1.0, 1.0, 1.0};  /* white diffuse light. */
+    GLfloat light_position[] = {1.0, 1.0, 1.0, 0.0};  /* Infinite light location. */
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_LIGHTING);
 
-   glClearColor (0.0, 0.0, 0.0, 0.0);
-   glShadeModel (GL_SMOOTH);
+    glEnable(GL_DEPTH_TEST);
 
-   glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-   glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
-   glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-
-   glEnable(GL_LIGHTING);
-   glEnable(GL_LIGHT0);
-   glEnable(GL_DEPTH_TEST);
+    glMatrixMode(GL_PROJECTION);
+    gluPerspective( /* field of view in degree */ 40.0,
+    /* aspect ratio */ 1.0,
+    /* Z near */ 1.0, /* Z far */ 10.0);
+    glMatrixMode(GL_MODELVIEW);
+   //  GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+   // GLfloat mat_shininess[] = { 100.0 };
+   // GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
+   //
+   // glClearColor (0.0, 0.0, 0.0, 0.0);
+   // glShadeModel (GL_SMOOTH);
+   //
+   // glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+   // glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+   // glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+   //
+   // glEnable(GL_LIGHTING);
+   // glEnable(GL_LIGHT0);
+   // glEnable(GL_DEPTH_TEST);
 }
 
 void changeCamera(int angle, int w, int h){
