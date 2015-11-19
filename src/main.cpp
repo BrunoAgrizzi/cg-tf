@@ -18,7 +18,7 @@ GLuint textureSun;
 GLuint texturePlane;
 
 //Camera controls
-double camDist=50;
+double camDist=100;
 double camXYAngle=0;
 double camXZAngle=0;
 int toggleCam = 0;
@@ -44,12 +44,21 @@ void display (void){
         glTranslatef(0,0,-camDist);
         glRotatef(camXZAngle,1,0,0);
         glRotatef(camXYAngle,0,1,0);
+
+
+        // glRotatef(camXZAngle,1,0,0);
+        // glRotatef(camXYAngle,0,1,0);
     }
     if(toggleCam == 1){
-         gluLookAt(10,10,50, 0,0,0, 0,1,0);
+         gluLookAt(-player.getGy(),10,player.getGx(), 0,0,0, 0,1,0);
     }
     if(toggleCam == 2){
-        gluLookAt(10,10,50, 0,0,0, 0,1,0);
+        glTranslatef(player.getGy(), 20,player.getGx());
+        glRotatef(-player.getAngle(),0,1,0);
+        gluLookAt(
+                    player.getGy(), 20,player.getGx(),
+                    player.getGy(), 0, player.getGx(),
+                    -1, 0, 0);
     }
 
     //GLfloat light_position[] = { 0.0, 0.0, 0.0, 1.0 };

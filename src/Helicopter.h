@@ -50,6 +50,19 @@ public:
 	void init();
 	void rotate(GLfloat value);
 	void move(GLfloat value);
+
+
+
+	// getters and setters
+	float getAngle();
+	float getGx();
+	float getGy();
+
+
+
+
+
+
 	// void drawEnemy();
     //
 	// void moveHelice(float value);

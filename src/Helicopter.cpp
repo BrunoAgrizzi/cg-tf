@@ -85,7 +85,6 @@ void drawHelicopter(float angleHelice, Cube base, Cube tail, Cube leftTail,Cube 
         base.draw();
     glPopMatrix();
     glPushMatrix();
-
         tail.setScale(tailSx, tailSy, tailSz);
         tail.setTranslation(tailTx,tailTy,tailTz);
         tail.draw();
@@ -130,6 +129,15 @@ void Helicopter::move(GLfloat value){
 		this->gX += value * cos(( 90 + angle) * 3.1415/180.0);
 		this->gY += value * sin((angle + 90) * 3.1415/180.0);
 	// }
+}
+float Helicopter::getAngle(){
+	return this->angle;
+}
+float Helicopter::getGx(){
+	return this->gX;
+}
+float Helicopter::getGy(){
+	return this->gY;
 }
 
 // void Helicopter::move(GLfloat value){
