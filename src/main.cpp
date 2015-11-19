@@ -40,9 +40,17 @@ void display (void){
     //glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
     glPopMatrix();
 
-    glTranslatef(0,0,-camDist);
-    glRotatef(camXZAngle,1,0,0);
-    glRotatef(camXYAngle,0,1,0);
+    if (toggleCam == 0){
+        glTranslatef(0,0,-camDist);
+        glRotatef(camXZAngle,1,0,0);
+        glRotatef(camXYAngle,0,1,0);
+    }
+    if(toggleCam == 1){
+         gluLookAt(10,10,50, 0,0,0, 0,1,0);
+    }
+    if(toggleCam == 2){
+        gluLookAt(10,10,50, 0,0,0, 0,1,0);
+    }
 
     //GLfloat light_position[] = { 0.0, 0.0, 0.0, 1.0 };
     //glLightfv(GL_LIGHT0, GL_POSITION, light_position);
@@ -52,26 +60,26 @@ void display (void){
     //glLightfv(GL_LIGHT1, GL_POSITION, light_position1);
     //glLightfv(GL_LIGHT1, GL_DIFFUSE, light1);
 
-      glDisable(GL_LIGHTING);
+    glDisable(GL_LIGHTING);
 
 
-    /////////////////////////////////////////////////////player.draw();
+    player.draw();
     drawAxes();
 
     //glDisable(GL_LIGHTING);
-    Cube c = Cube();
-    c.setTexturePath("../img/sun1.bmp");
-    c.setTranslation(0,0,0);
-    c.setScale(5,5,5);
-    c.draw();
+    // Cube c = Cube();
+    // c.setTexturePath("../img/sun1.bmp");
+    // c.setTranslation(0,0,0);
+    // c.setScale(5,5,5);
+    // c.draw();
     //glEnable(GL_LIGHTING);
 
+    // arena.drawArena();
 
     glutSwapBuffers();
 }
 
 void init (void){
-
      glEnable(GL_DEPTH_TEST);
      glEnable( GL_TEXTURE_2D );
      glEnable(GL_LIGHTING);    //    glShadeModel (GL_FLAT);
@@ -80,12 +88,12 @@ void init (void){
      glShadeModel (GL_SMOOTH);
      glDepthFunc(GL_LEQUAL);
 
+    //  standard camera
+    toggleCam = 0;
 
+     player.init();
     //setTexture(textureSun);
-
-
     //glMatrixMode(GL_PROJECTION);
-
     //glMatrixMode(GL_MODELVIEW);
 }
 
@@ -132,6 +140,10 @@ void idle(){
     if(keys['d'] == 1 || keys['D'] == 1) player.rotate(1 * -1);
     if(keys['w'] == 1 || keys['W'] == 1) player.move(-0.5);
     if(keys['s'] == 1 || keys['S'] == 1) player.move(+0.5);
+    if(keys['0'] == 1) toggleCam = 0;
+    if(keys['1'] == 1) toggleCam = 1;
+    if(keys['2'] == 1) toggleCam = 2;
+
     glutPostRedisplay();
 }
 

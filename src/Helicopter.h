@@ -8,13 +8,14 @@
 #include "Rect.h"
 #include "Circle.h"
 #include <GL/glut.h>
-// #include "Shot.h"
+#include "Cube.h"
 
 
 using namespace std;
 
 class Helicopter{
 private:
+	Cube base, tail, leftTail, rightTail, helix, helix2;
 	float velTiro;
 	float velHelicoptero;
 	float tempoDeVoo;
@@ -46,6 +47,7 @@ public:
 	Helicopter(float freqTiro, float velHelicoptero, float cx, float cy);
 	Helicopter(float velTiro, float velHelicoptero, float tempoDeVoo);
 	void draw();
+	void init();
 	void rotate(GLfloat value);
 	void move(GLfloat value);
 	// void drawEnemy();

@@ -116,6 +116,9 @@ void setKeyUp(unsigned char key, int x, int j){
 		case 'D': case 'd':	keys['d'] = 0; break;
 		case 'w': case 'W': keys['w'] = 0; break;
 		case 'S': case 's': keys['s'] = 0; break;
+		case '0': keys['0'] = 0; break;
+		case '1': keys['1'] = 0; break;
+		case '2': keys['2'] = 0; break;
 		// case '+': keys['+'] = 0; break;
 		// case '-': keys['-'] = 0; break;
 		break;
@@ -129,6 +132,9 @@ void setKeyDown(unsigned char key, int x, int j){
 		case 'D': case 'd':	keys['d'] = 1; break;
 		case 'w': case 'W': keys['w'] = 1; break;
 		case 'S': case 's': keys['s'] = 1; break;
+		case '0': keys['0'] = 1; break;
+		case '1': keys['1'] = 1; break;
+		case '2': keys['2'] = 1; break;
 		// case '+': keys['+'] = 1; break;
 		// case '-': keys['-'] = 1; break;
 		break;

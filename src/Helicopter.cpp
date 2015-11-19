@@ -12,6 +12,22 @@ Helicopter::Helicopter(){
 	// gY = 0.0;
 }
 
+void Helicopter::init(){
+	this->base = Cube();
+	this->tail = Cube();
+	this->leftTail = Cube();
+	this->rightTail = Cube();
+	this->helix = Cube();
+	this->helix2 = Cube();
+
+	this->base.setTexturePath("../img/sun1.bmp");
+	this->tail.setTexturePath("../img/sun1.bmp");
+	this->leftTail.setTexturePath("../img/sun1.bmp");
+	this->rightTail.setTexturePath("../img/sun1.bmp");
+	this->helix.setTexturePath("../img/sun1.bmp");
+	this->helix2.setTexturePath("../img/sun1.bmp");
+}
+
 // enemy
 Helicopter::Helicopter(float freqTiro, float velHelicoptero, float cx, float cy){
 	this->velTiro = 0.2;
@@ -56,9 +72,7 @@ Helicopter::Helicopter(float velTiro, float velHelicoptero, float tempoDeVoo){
 	// isEnemy = false;
 }
 
-void drawHelicopter(float angleHelice){
-
-
+void drawHelicopter(float angleHelice, Cube base, Cube tail, Cube leftTail,Cube rightTail,Cube helix,Cube helix2){
 	const float baseScale[] = {7,4,4};
 	const float baseSx = 6, baseSy = 4, baseSz = 4;
 	const float baseTx = 0, baseTy = 0, baseTz = 0;
@@ -66,35 +80,31 @@ void drawHelicopter(float angleHelice){
 	const float tailTx = baseSx + 5, tailTy = 0, tailTz = 0;
 
 	glPushMatrix();
-        Cube base = Cube();
-        base.setColor(1,0,0,1);
 		base.setScale(baseSx, baseSy, baseSz);
 		base.setTranslation(baseTx, baseTy, baseTz);
         base.draw();
     glPopMatrix();
     glPushMatrix();
-        Cube tail = Cube();
-        tail.setColor(0,0.6,1,1);
+
         tail.setScale(tailSx, tailSy, tailSz);
         tail.setTranslation(tailTx,tailTy,tailTz);
         tail.draw();
     glPopMatrix();
     glPushMatrix();
-        Cube leftTail = Cube();             	Cube rightTail = Cube();
-        leftTail.setColor(1,0.5,0.5,1);     	rightTail.setColor(0.5,0.5,1,1);
-        leftTail.setScale(3,1,1);				rightTail.setScale(3,1,1);
-        leftTail.setTranslation(baseSx+10,0,2);	rightTail.setTranslation(baseSx+10,0,-2);
-        leftTail.draw();                    	rightTail.draw();
+
+        leftTail.setScale(3,1,1);
+		rightTail.setScale(3,1,1);
+        leftTail.setTranslation(baseSx+10,0,2);
+		rightTail.setTranslation(baseSx+10,0,-2);
+        leftTail.draw();
+		rightTail.draw();
     glPopMatrix();
 	glPushMatrix();
-		Cube helix = Cube();
-		helix.setColor(0,0.1,0.2,1);
 		helix.setRotation(angleHelice);
 		helix.setScale(12, 0.3, 1);
 		helix.setTranslation(0,baseSy + 0.5,0);
 		helix.draw();
-		Cube helix2 = Cube();
-		helix2.setColor(0,0.1,0.2,1);
+
 		helix2.setRotation(angleHelice-90);
 		helix2.setScale(12, 0.3, 1);
 		helix2.setTranslation(0,baseSy + 0.5,0);
@@ -107,7 +117,7 @@ void Helicopter::draw(){
 	glPushMatrix();
 		glTranslatef(0+gY,0, 0+gX);
 		glRotatef(angle,0,1,0);
-		drawHelicopter(angleHelice);
+		drawHelicopter(angleHelice,this->base, tail, leftTail, rightTail, helix, helix2);
 	glPopMatrix();
 }
 
