@@ -10,73 +10,51 @@ using namespace tinyxml2;
 
 Arena::Arena(){}
 
-void Arena::addTexture(){
-
-  GLfloat materialEmission[] = { 1.0, 1.0, 1.0, 1};
-  GLfloat materialColorA[] = { 0.2, 0.2, 0.2, 1};
-  GLfloat materialColorD[] = { 1.0, 1.0, 1.0, 1};
-  GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1};
-  GLfloat mat_shininess[] = { 100.0 };
-  glColor3f(1,1,1);
-
-  glMaterialfv(GL_FRONT, GL_EMISSION, materialEmission);
-  glMaterialfv(GL_FRONT, GL_AMBIENT, materialColorA);
-  glMaterialfv(GL_FRONT, GL_DIFFUSE, materialColorD);
-  glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-  glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
-
-
-  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT  );//X
-  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );//Y
-
-  glBindTexture (GL_TEXTURE_2D, this->texture);
-  double textureS = 1; // Bigger than 1, repeat
-  glBegin (GL_QUADS);
-      glNormal3f(0,1,0);
-      glTexCoord2f (0, 0);
-      glVertex3f (-1, 0, -1);
-
-      glNormal3f(0,1,0);
-      glTexCoord2f (0, textureS);
-      glVertex3f (-1, 0, +1);
-
-      glNormal3f(0,1,0);
-      glTexCoord2f (textureS, textureS);
-      glVertex3f (+1, 0, +1);
-
-      glNormal3f(0,1,0);
-      glTexCoord2f (textureS, 0);
-      glVertex3f (+1, 0, -1);
-  glEnd();
+void Arena::init(){
+  arenaBot.setTexturePath("../img/earth.bmp");
+  arenaLeft.setTexturePath("../img/stars1.bmp");
+  arenaRight.setTexturePath("../img/stars1.bmp");
+  arenaFront.setTexturePath("../img/stars1.bmp");
+  arenaBack.setTexturePath("../img/stars1.bmp");
+  arenaTop.setTexturePath("../img/stars1.bmp");
 }
 
-void Arena::drawArena(){
+void Arena::draw(){
 
   glPushMatrix();
-
-    arenaBot.setTexturePath("../img/earth.bmp");
     arenaBot.setTranslation(0,0,0);
-    arenaBot.setScale(arena.getWidth(),0,arena.getHeight());
+    arenaBot.setScale(arena.getWidth(),0.1,arena.getHeight());
     arenaBot.draw();
   glPopMatrix();
 
   glPushMatrix();
-    arenaLeft.setTexturePath("../img/sun1.bmp");
-    //arenaLeft.setScale(arena.getArena().getWidth(),0,arena.getArena().getHeight());
-    glRotatef(90, 0,0,1);
-    arenaLeft.setScale(50,0,50);
-
-    arenaLeft.setTranslation(arena.getWidth()/2,arena.getHeight()/2,0);
-    //arenaLeft.setTranslation(50,50,0);
+    arenaLeft.setScale(arena.getWidth()/2,0.1,arena.getHeight());
+    glRotatef(-90, 0,0,1);
+    arenaLeft.setTranslation(-(arena.getWidth())/2,arena.getHeight()/2,0);
     arenaLeft.draw();
   glPopMatrix();
 
-}
-void Arena::setTexture(GLuint tex){
-    this->texture = tex;
-}
-GLuint Arena::getTexture(){
-  return this->texture;
+  glPushMatrix();
+    arenaRight.setScale(arena.getWidth()/2,0.1,arena.getHeight());
+    glRotatef(90, 0,0,1);
+    arenaRight.setTranslation(arena.getWidth()/2,arena.getHeight()/2,0);
+    arenaRight.draw();
+  glPopMatrix();
+
+  glPushMatrix();
+    arenaFront.setScale(arena.getWidth(),0.1,arena.getHeight()/2);
+    glRotatef(-90, 1,0,0);
+    arenaFront.setTranslation(0,arena.getWidth()/2,arena.getHeight()/2);
+    arenaFront.draw();
+  glPopMatrix();
+
+  glPushMatrix();
+    arenaBack.setScale(arena.getWidth(),0.1,arena.getHeight()/2);
+    glRotatef(90, 1,0,0);
+    arenaBack.setTranslation(0,arena.getWidth()/2,-(arena.getHeight()/2));
+    arenaBack.draw();
+  glPopMatrix();
+
 }
 Rect Arena::getArena(){
   return this->arena;

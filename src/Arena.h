@@ -16,6 +16,11 @@ class Arena{
 	private:
 		Cube arenaBot;
 		Cube arenaLeft;
+		Cube arenaRight;
+		Cube arenaFront;
+		Cube arenaBack;
+		Cube arenaTop;
+		
 		Rect arena;
 		Rect postoAbastecimento;
 		Circle jogador;
@@ -26,10 +31,8 @@ class Arena{
 	public:
 		Arena();
 		void readXMLArena(const char* path);
-		void addTexture();
-		void drawArena();
-		GLuint getTexture();
-		void setTexture(GLuint tex);
+		void init();
+		void draw();
 		Rect getArena();
 		// Rect getPostoAbastecimento();
 		// Circle getJogador();
