@@ -51,7 +51,7 @@ void Cube::draw(){
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT  );//X
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );//Y
 
-    this->texture = LoadTextureRAW(this->texturePath);
+
     //glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, this->materialColor);
     glBindTexture (GL_TEXTURE_2D, this->texture);
 
@@ -107,7 +107,7 @@ void Cube::setColor(float r, float g, float b, float q){
 }
 
 void Cube::setTexturePath(char* path){
-    this->texturePath = path;
+    this->texture = LoadTextureRAW(path);
 }
 
 GLuint LoadTextureRAW( const char * filename ){
