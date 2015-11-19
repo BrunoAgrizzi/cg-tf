@@ -18,6 +18,7 @@ private:
     float rotationAngle;
     float materialColor[4];
     GLuint texture;
+    char* texturePath;
 public:
 
     // default constructor
@@ -32,8 +33,12 @@ public:
     void setRotation(float angle);
 
     void setColor(float r, float g, float b, float q);
+
     GLuint getTexture();
+
     void setTexture(GLuint tex);
+
+    void setTexturePath(char* path);
 
     // x, y: cube's center will be drawn at these positions
     void draw();

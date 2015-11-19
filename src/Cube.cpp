@@ -3,8 +3,11 @@
 #include <math.h>
 #include <GL/glut.h>
 // #include "Utils.h"
-
+#include "imageloader.h"
 using namespace std;
+
+
+GLuint LoadTextureRAW(const char * filename);
 
 Cube::Cube(){
     vertexes[0][0] = vertexes[1][0] = vertexes[2][0] = vertexes[3][0] = -1;
@@ -48,9 +51,9 @@ void Cube::draw(){
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT  );//X
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );//Y
 
-
+    this->texture = LoadTextureRAW(this->texturePath);
     //glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, this->materialColor);
-    glBindTexture (GL_TEXTURE_2D, texture);
+    glBindTexture (GL_TEXTURE_2D, this->texture);
 
     glPushMatrix();
         glTranslatef(this->transX, this->transY, this->transZ);
@@ -101,4 +104,33 @@ void Cube::setColor(float r, float g, float b, float q){
     this->materialColor[1] = g;
     this->materialColor[2] = b;
     this->materialColor[4] = q;
+}
+
+void Cube::setTexturePath(char* path){
+    this->texturePath = path;
+}
+
+GLuint LoadTextureRAW( const char * filename ){
+
+    GLuint texture;
+
+    Image* image = loadBMP(filename);
+
+    glGenTextures( 1, &texture );
+    glBindTexture( GL_TEXTURE_2D, texture );
+    glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,GL_MODULATE );
+    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_LINEAR );
+    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,GL_LINEAR );
+    glTexImage2D(GL_TEXTURE_2D,                //Always GL_TEXTURE_2D
+                             0,                            //0 for now
+                             GL_RGB,                       //Format OpenGL uses for image
+                             image->width, image->height,  //Width and height
+                             0,                            //The border of the image
+                             GL_RGB, //GL_RGB, because pixels are stored in RGB format
+                             GL_UNSIGNED_BYTE, //GL_UNSIGNED_BYTE, because pixels are stored
+                                               //as unsigned numbers
+                             image->pixels);               //The actual pixel data
+    delete image;
+
+    return texture;
 }
