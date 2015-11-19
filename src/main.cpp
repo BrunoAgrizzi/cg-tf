@@ -69,19 +69,12 @@ void display (void){
     //glLightfv(GL_LIGHT1, GL_POSITION, light_position1);
     //glLightfv(GL_LIGHT1, GL_DIFFUSE, light1);
 
-    glDisable(GL_LIGHTING);
 
 
+    arena.draw();
     player.draw();
     drawAxes();
 
-    //glDisable(GL_LIGHTING);
-    // Cube c = Cube();
-    // c.setTexturePath("../img/sun1.bmp");
-    // c.setTranslation(0,0,0);
-    // c.setScale(5,5,5);
-    // c.draw();
-    //glEnable(GL_LIGHTING);
 
     // arena.drawArena();
 
@@ -96,6 +89,8 @@ void init (void){
 
      glShadeModel (GL_SMOOTH);
      glDepthFunc(GL_LEQUAL);
+     arena.init();
+
 
     //  standard camera
     toggleCam = 0;
@@ -104,17 +99,20 @@ void init (void){
     //setTexture(textureSun);
     //glMatrixMode(GL_PROJECTION);
     //glMatrixMode(GL_MODELVIEW);
+
+    glMatrixMode(GL_PROJECTION);
+
+    glMatrixMode(GL_MODELVIEW);
 }
 
 void changeCamera(int angle, int w, int h){
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
-    gluPerspective (angle,(GLfloat)w / (GLfloat)h, 1, 150.0);
+    gluPerspective (angle,(GLfloat)w / (GLfloat)h, 1, 800.0);
     glMatrixMode (GL_MODELVIEW);
 }
 
 void reshape (int w, int h) {
-
     glViewport (0, 0, (GLsizei)w, (GLsizei)h);
     changeCamera(camAngle, w, h);
 }
