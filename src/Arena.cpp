@@ -51,16 +51,35 @@ void Arena::addTexture(){
 }
 
 void Arena::drawArena(){
-  //glColor3f(0.0,1.0,0.0);
-  glTranslatef(0.0,0.0,0.0);
-  glScalef(this->arena.getWidth(),0,this->arena.getWidth());
-  addTexture();
+
+  glPushMatrix();
+
+    arenaBot.setTexturePath("../img/earth.bmp");
+    arenaBot.setTranslation(0,0,0);
+    arenaBot.setScale(arena.getWidth(),0,arena.getHeight());
+    arenaBot.draw();
+  glPopMatrix();
+
+  glPushMatrix();
+    arenaLeft.setTexturePath("../img/sun1.bmp");
+    //arenaLeft.setScale(arena.getArena().getWidth(),0,arena.getArena().getHeight());
+    glRotatef(90, 0,0,1);
+    arenaLeft.setScale(50,0,50);
+
+    arenaLeft.setTranslation(arena.getWidth()/2,arena.getHeight()/2,0);
+    //arenaLeft.setTranslation(50,50,0);
+    arenaLeft.draw();
+  glPopMatrix();
+
 }
 void Arena::setTexture(GLuint tex){
     this->texture = tex;
 }
 GLuint Arena::getTexture(){
   return this->texture;
+}
+Rect Arena::getArena(){
+  return this->arena;
 }
 
 

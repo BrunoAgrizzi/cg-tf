@@ -37,7 +37,7 @@ void display (void){
     //glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
     glPushMatrix();
     glTranslatef(0.0, 10.0, 10.0);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+    //glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
     glPopMatrix();
 
     glTranslatef(0,0,-camDist);
@@ -52,10 +52,8 @@ void display (void){
     //glLightfv(GL_LIGHT1, GL_POSITION, light_position1);
     //glLightfv(GL_LIGHT1, GL_DIFFUSE, light1);
 
+      glDisable(GL_LIGHTING);
 
-    glPushMatrix();
-    //arena.drawArena();
-    glPopMatrix();
 
     /////////////////////////////////////////////////////player.draw();
     drawAxes();
@@ -82,10 +80,7 @@ void init (void){
      glShadeModel (GL_SMOOTH);
      glDepthFunc(GL_LEQUAL);
 
-    // textureSun = LoadTextureRAW( "../img/sun1.bmp" );
-    //texturePlane = LoadTextureRAW( "stars1.bmp" );
-    // texturePlane = LoadTextureRAW( "../img/earth.bmp" );
-    arena.setTexture(texturePlane);
+
     //setTexture(textureSun);
 
 

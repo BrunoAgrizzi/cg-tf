@@ -7,12 +7,15 @@
 #include <string>
 #include "Rect.h"
 #include "Circle.h"
+#include "Cube.h"
 // #include "Helicopter.h"
 
 using namespace std;
 
 class Arena{
 	private:
+		Cube arenaBot;
+		Cube arenaLeft;
 		Rect arena;
 		Rect postoAbastecimento;
 		Circle jogador;
@@ -27,7 +30,7 @@ class Arena{
 		void drawArena();
 		GLuint getTexture();
 		void setTexture(GLuint tex);
-		// Rect getArena();
+		Rect getArena();
 		// Rect getPostoAbastecimento();
 		// Circle getJogador();
 		// void drawArena(float x, float y);
