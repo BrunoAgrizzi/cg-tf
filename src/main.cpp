@@ -50,15 +50,33 @@ void display (void){
         // glRotatef(camXYAngle,0,1,0);
     }
     if(toggleCam == 1){
-         gluLookAt(-player.getGy(),10,player.getGx(), 0,0,0, 0,1,0);
+      //gluLookAt(-player.getGy(),10,player.getGx(), 0,0,0, 0,1,0);
+
+      //////////////////FUNCIONANDOOOOOOOOO////////////////////////////
+      float anguloTeste = 0;
+      anguloTeste = player.getAngle() * (3.1415 / 180);
+           gluLookAt(player.getGy() + 10 * cos(-anguloTeste),30,player.getGx() + 10 * sin(-anguloTeste),
+
+                  player.getGy(), 20, player.getGx(),
+
+                   0, 1, 0);
+      //////////////////////UHULLLLLLLLLLLLL//////////////////////////////             
     }
     if(toggleCam == 2){
-        glTranslatef(player.getGy(), 20,player.getGx());
+      float anguloTeste = 0;
+      anguloTeste = player.getAngle() * (3.1415 / 180);
+           gluLookAt(player.getGy(), 20, player.getGx(),
+
+                   player.getGy() + -40 * sin(anguloTeste),0,player.getGx() + -40 * cos(anguloTeste),
+
+                   -1, 0, 0);
+
+        /*glTranslatef(player.getGy(), 20,player.getGx());
         glRotatef(-player.getAngle(),0,1,0);
         gluLookAt(
                     player.getGy(), 20,player.getGx(),
                     player.getGy(), 0, player.getGx(),
-                    -1, 0, 0);
+                    -1, 0, 0);*/
     }
 
     //GLfloat light_position[] = { 0.0, 0.0, 0.0, 1.0 };
