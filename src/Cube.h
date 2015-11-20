@@ -15,6 +15,7 @@ private:
     GLint  faces[6][4];
     float scaleX, scaleY, scaleZ;
     float transX, transY, transZ;
+    float rotationAxis[3];
     float rotationAngle;
     float materialColor[4];
     GLuint texture;
@@ -42,6 +43,8 @@ public:
 
     // x, y: cube's center will be drawn at these positions
     void draw();
+
+    void drawBC();
 };
 
 #endif

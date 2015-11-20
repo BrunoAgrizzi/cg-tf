@@ -118,10 +118,18 @@ void drawHelicopter(float angleHelice, Cube base, Cube tail, Cube leftTail,Cube 
 		helix2.draw();
 	glPopMatrix();
 	glPushMatrix();
-		gun.setTranslation(-6 - 2,0,0);
-		gun.setRotation(0);
-		gun.setScale(2,0.7,0.7);
-		gun.draw();
+		gun.setTranslation(-5.5,0,0);
+		gun.setScale(0.7,0.7,2);
+		const float baseRotation = -90;
+		// base rotation is -90
+		// TODO make angle dynamic
+		gun.setRotation(baseRotation + (-45));
+
+
+		// glTranslatef(-6,0,0);
+		glutSolidCube(1.0);
+		gun.drawBC();
+		// gun.set()
 	glPopMatrix();
 }
 

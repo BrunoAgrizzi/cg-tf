@@ -77,6 +77,103 @@ void Cube::draw(){
 
 }
 
+void Cube::drawBC(){
+    int i;
+    GLfloat materialEmission[] = { 1.0, 1.0, 1.0, 1};
+    GLfloat materialColorA[] = { 0.2, 0.2, 0.2, 1};
+    GLfloat materialColorD[] = { 1.0, 1.0, 1.0, 1};
+    GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1};
+    GLfloat mat_shininess[] = { 100.0 };
+    glColor3f(1,1,1);
+
+    glMaterialfv(GL_FRONT, GL_EMISSION, materialEmission);
+    glMaterialfv(GL_FRONT, GL_AMBIENT, materialColorA);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, materialColorD);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+
+
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT  );//X
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );//Y
+
+
+    //glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, this->materialColor);
+    glBindTexture (GL_TEXTURE_2D, this->texture);
+
+    glPushMatrix();
+        glTranslatef(this->transX, this->transY, this->transZ);
+        glRotatef(this->rotationAngle, 0,1,0);
+        glScalef(this->scaleX, this->scaleY, this->scaleZ);
+        glBegin(GL_QUADS);
+            // front
+            glNormal3f(0,1,0);
+            glTexCoord2f (0, 0);
+            glVertex3f( 1.0f, 1.0f, 0.0);
+            glTexCoord2f (0, 1);
+            glVertex3f(-1.0f, 1.0f, 0.0);
+            glTexCoord2f (1, 1);
+            glVertex3f(-1.0f, 1.0f, 2.0);
+            glTexCoord2f (1, 0);
+            glVertex3f( 1.0f, 1.0f, 2.0);
+
+            // back
+            glNormal3f(0,-1,0);
+            glTexCoord2f (0, 0);
+            glVertex3f( 1.0f, -1.0f,  2.0f);
+            glTexCoord2f (0, 1);
+            glVertex3f(-1.0f, -1.0f,  2.0f);
+            glTexCoord2f (1, 1);
+            glVertex3f(-1.0f, -1.0f,  0.0f);
+            glTexCoord2f (1, 0);
+            glVertex3f( 1.0f, -1.0f,  0.0f);
+
+            // top
+            glNormal3f(0,0,1);
+            glTexCoord2f (0, 0);
+            glVertex3f( 1.0f,  1.0f, 2.0f);
+            glTexCoord2f (0, 1);
+            glVertex3f(-1.0f,  1.0f,2.0f);
+            glTexCoord2f (1, 1);
+            glVertex3f(-1.0f, -1.0f,2.0f);
+            glTexCoord2f (1, 0);
+            glVertex3f( 1.0f, -1.0f,2.0f);
+
+            // bottom
+            glNormal3f(0,0,-1);
+            glTexCoord2f (0, 0);
+            glVertex3f( 1.0f, -1.0f,0.0f);
+            glTexCoord2f (0, 1);
+            glVertex3f(-1.0f, -1.0f,0.0f);
+            glTexCoord2f (1, 1);
+            glVertex3f(-1.0f,  1.0f,0.0f);
+            glTexCoord2f (1, 0);
+            glVertex3f( 1.0f, 1.0f,0.0f);
+
+            // left
+            glNormal3f(-1,0,0);
+            glTexCoord2f (0, 0);
+            glVertex3f(-1.0f,  1.0f,2.0f);
+            glTexCoord2f (0, 1);
+            glVertex3f(-1.0f,  1.0f,0.0f);
+            glTexCoord2f (1, 1);
+            glVertex3f(-1.0f, -1.0f,0.0f);
+            glTexCoord2f (1, 0);
+            glVertex3f(-1.0f, -1.0f,2.0f);
+
+            // right
+            glNormal3f(1,0,0);
+            glTexCoord2f (0, 0);
+            glVertex3f(1.0f,  1.0f,0.0f);
+            glTexCoord2f (0, 1);
+            glVertex3f(1.0f,  1.0f,2.0f);
+            glTexCoord2f (1, 1);
+            glVertex3f(1.0f, -1.0f,2.0f);
+            glTexCoord2f (1, 0);
+            glVertex3f(1.0f, -1.0f,0.0f);
+        glEnd();
+   glPopMatrix();
+}
+
 void Cube::setScale(float sx, float sy, float sz){
     this->scaleX = sx;
     this->scaleY = sy;

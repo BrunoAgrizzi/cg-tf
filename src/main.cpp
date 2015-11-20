@@ -60,11 +60,11 @@ void display (void){
                     0, 1, 0);
     }
     if(toggleCam == 3){
-    //   float anguloPlayer = 0;
-    //   anguloPlayer = player.getAngle() * (3.1415 / 180);
-    //        gluLookAt(player.getGy(), 20, player.getGx(),
-    //                 player.getGy() + -40 * sin(anguloPlayer),0,player.getGx() + -40 * cos(anguloPlayer),
-    //                 -1, 0, 0);
+        //   float anguloPlayer = 0;
+        //   anguloPlayer = player.getAngle() * (3.1415 / 180);
+        //        gluLookAt(player.getGy(), 20, player.getGx(),
+        //                 player.getGy() + -40 * sin(anguloPlayer),0,player.getGx() + -40 * cos(anguloPlayer),
+        //                 -1, 0, 0);
     }
 
     //GLfloat light_position[] = { 0.0, 0.0, 0.0, 1.0 };
