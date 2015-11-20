@@ -26,6 +26,7 @@ void Helicopter::init(){
 	this->rightTail.setTexturePath("../img/sun1.bmp");
 	this->helix.setTexturePath("../img/sun1.bmp");
 	this->helix2.setTexturePath("../img/sun1.bmp");
+	this->gun.setTexturePath("../img/stars1.bmp");
 }
 
 // enemy
@@ -33,8 +34,9 @@ Helicopter::Helicopter(float freqTiro, float velHelicoptero, float cx, float cy)
 	this->velTiro = 0.2;
 	this->freqTiro = freqTiro;
 	this->velHelicoptero= velHelicoptero;
-	cX = cx;
-	cY = cy;
+	this->worldHeight = 15;
+	// cX = cx;
+	// cY = cy;
 	// gX = 0.0,
 	// gY = 0.0;
 	// radius = bodyWidth*0.7;
@@ -56,11 +58,12 @@ Helicopter::Helicopter(float velTiro, float velHelicoptero, float tempoDeVoo){
 	this->velHelicoptero = velHelicoptero;
 	this->tempoDeVoo = tempoDeVoo;
 	this->angle = 0;
-	cX = 0;
-	cY = 0;
-	// gas = tempoDeVoo;
+	this->worldHeight = 15;
 	gX = 0.0;
 	gY = 0.0;
+	// cX = 0;
+	// cY = 0;
+	// gas = tempoDeVoo;
 	// angle = 0.0;
 	// flying = false;
 	// velHelice = 0.0;
@@ -72,7 +75,7 @@ Helicopter::Helicopter(float velTiro, float velHelicoptero, float tempoDeVoo){
 	// isEnemy = false;
 }
 
-void drawHelicopter(float angleHelice, Cube base, Cube tail, Cube leftTail,Cube rightTail,Cube helix,Cube helix2){
+void drawHelicopter(float angleHelice, Cube base, Cube tail, Cube leftTail,Cube rightTail,Cube helix,Cube helix2, Cube gun){
 	const float baseScale[] = {7,4,4};
 	const float baseSx = 6, baseSy = 4, baseSz = 4;
 	const float baseTx = 0, baseTy = 0, baseTz = 0;
@@ -81,21 +84,25 @@ void drawHelicopter(float angleHelice, Cube base, Cube tail, Cube leftTail,Cube 
 
 	glPushMatrix();
 		base.setScale(baseSx, baseSy, baseSz);
+		base.setRotation(0);
 		base.setTranslation(baseTx, baseTy, baseTz);
         base.draw();
     glPopMatrix();
     glPushMatrix();
         tail.setScale(tailSx, tailSy, tailSz);
         tail.setTranslation(tailTx,tailTy,tailTz);
+		tail.setRotation(0);
         tail.draw();
     glPopMatrix();
     glPushMatrix();
-
         leftTail.setScale(3,1,1);
 		rightTail.setScale(3,1,1);
+		leftTail.setRotation(0);
+		rightTail.setRotation(0);
         leftTail.setTranslation(baseSx+10,0,2);
 		rightTail.setTranslation(baseSx+10,0,-2);
-        leftTail.draw();
+
+	    leftTail.draw();
 		rightTail.draw();
     glPopMatrix();
 	glPushMatrix();
@@ -104,19 +111,27 @@ void drawHelicopter(float angleHelice, Cube base, Cube tail, Cube leftTail,Cube 
 		helix.setTranslation(0,baseSy + 0.5,0);
 		helix.draw();
 
+		helix2.setRotation(0);
 		helix2.setRotation(angleHelice-90);
 		helix2.setScale(12, 0.3, 1);
 		helix2.setTranslation(0,baseSy + 0.5,0);
 		helix2.draw();
+	glPopMatrix();
+	glPushMatrix();
+		gun.setTranslation(-6 - 2,0,0);
+		gun.setRotation(0);
+		gun.setScale(2,0.7,0.7);
+		gun.draw();
 	glPopMatrix();
 }
 
 void Helicopter::draw(){
 	this->angleHelice = this->angleHelice + 15;
 	glPushMatrix();
-		glTranslatef(0+gY,0, 0+gX);
+		// TODO Y dinamico
+		glTranslatef(0+gY, worldHeight, 0+gX);
 		glRotatef(angle,0,1,0);
-		drawHelicopter(angleHelice,this->base, tail, leftTail, rightTail, helix, helix2);
+		drawHelicopter(angleHelice,this->base, tail, leftTail, rightTail, helix, helix2, gun);
 	glPopMatrix();
 }
 
@@ -138,6 +153,15 @@ float Helicopter::getGx(){
 }
 float Helicopter::getGy(){
 	return this->gY;
+}
+void Helicopter::setWorldHeight(float direction){
+	if((this->worldHeight > 0 && direction == -1) ||
+	(this->worldHeight < 800 && direction == 1)){
+		this->worldHeight = worldHeight + direction;
+	}
+}
+float Helicopter::getWorldHeight(){
+	return this->worldHeight;
 }
 
 // void Helicopter::move(GLfloat value){

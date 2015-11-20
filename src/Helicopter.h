@@ -15,16 +15,20 @@ using namespace std;
 
 class Helicopter{
 private:
-	Cube base, tail, leftTail, rightTail, helix, helix2;
-	float velTiro;
-	float velHelicoptero;
-	float tempoDeVoo;
-	float freqTiro;
-	GLfloat gX;
-	GLfloat gY;
-	float cX, cY;
+	Cube base, tail, leftTail, rightTail, helix, helix2, gun; // objects to be drawn
+	float velTiro, velHelicoptero, tempoDeVoo, freqTiro; // xml info
+	GLfloat gX, gY;
+	// float cX, cY;
 	GLfloat angle;
 	float angleHelice;
+
+	float worldHeight;
+
+
+
+
+
+
 	// bool flying;
 	// bool isEnemy;
 	// vector<Shot> shots;
@@ -52,11 +56,12 @@ public:
 	void move(GLfloat value);
 
 
-
 	// getters and setters
 	float getAngle();
 	float getGx();
 	float getGy();
+	float getWorldHeight();
+	void setWorldHeight(float direction);
 
 
 

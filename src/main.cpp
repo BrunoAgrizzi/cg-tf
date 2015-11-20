@@ -44,39 +44,27 @@ void display (void){
         glTranslatef(0,0,-camDist);
         glRotatef(camXZAngle,1,0,0);
         glRotatef(camXYAngle,0,1,0);
-
-
         // glRotatef(camXZAngle,1,0,0);
         // glRotatef(camXYAngle,0,1,0);
     }
-    if(toggleCam == 1){
-      //gluLookAt(-player.getGy(),10,player.getGx(), 0,0,0, 0,1,0);
-
-      //////////////////FUNCIONANDOOOOOOOOO////////////////////////////
-      float anguloTeste = 0;
-      anguloTeste = player.getAngle() * (3.1415 / 180);
-           gluLookAt(player.getGy() + 10 * cos(-anguloTeste),30,player.getGx() + 10 * sin(-anguloTeste),
-
-                  player.getGy(), 20, player.getGx(),
-
-                   0, 1, 0);
-      //////////////////////UHULLLLLLLLLLLLL//////////////////////////////             
+    if(toggleCam == 1){ // first person
+      float anguloPlayer = player.getAngle() * (3.1415 / 180);
+           gluLookAt(player.getGy() + 10 * cos(-anguloPlayer),player.getWorldHeight() + 30,player.getGx() + 10 * sin(-anguloPlayer),
+                    player.getGy(), player.getWorldHeight() + 30, player.getGx(),
+                    0, 1, 0);
     }
-    if(toggleCam == 2){
-      float anguloTeste = 0;
-      anguloTeste = player.getAngle() * (3.1415 / 180);
-           gluLookAt(player.getGy(), 20, player.getGx(),
-
-                   player.getGy() + -40 * sin(anguloTeste),0,player.getGx() + -40 * cos(anguloTeste),
-
-                   -1, 0, 0);
-
-        /*glTranslatef(player.getGy(), 20,player.getGx());
-        glRotatef(-player.getAngle(),0,1,0);
-        gluLookAt(
-                    player.getGy(), 20,player.getGx(),
-                    player.getGy(), 0, player.getGx(),
-                    -1, 0, 0);*/
+    if(toggleCam == 2){ // third person-ish camera
+      float anguloPlayer = player.getAngle() * (3.1415 / 180);
+           gluLookAt(player.getGy() + 10 * cos(-anguloPlayer),player.getWorldHeight() + 30,player.getGx() + 10 * sin(-anguloPlayer),
+                    player.getGy(), player.getWorldHeight() + 23, player.getGx(),
+                    0, 1, 0);
+    }
+    if(toggleCam == 3){
+    //   float anguloPlayer = 0;
+    //   anguloPlayer = player.getAngle() * (3.1415 / 180);
+    //        gluLookAt(player.getGy(), 20, player.getGx(),
+    //                 player.getGy() + -40 * sin(anguloPlayer),0,player.getGx() + -40 * cos(anguloPlayer),
+    //                 -1, 0, 0);
     }
 
     //GLfloat light_position[] = { 0.0, 0.0, 0.0, 1.0 };
@@ -168,6 +156,8 @@ void idle(){
     if(keys['0'] == 1) toggleCam = 0;
     if(keys['1'] == 1) toggleCam = 1;
     if(keys['2'] == 1) toggleCam = 2;
+    if(keys['+'] == 1) player.setWorldHeight(1);
+    if(keys['-'] == 1) player.setWorldHeight(-1);
 
     glutPostRedisplay();
 }
