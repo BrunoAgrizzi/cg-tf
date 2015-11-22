@@ -61,6 +61,7 @@ public:
 	float getAngle();
 	float getGx();
 	float getGy();
+	Cube getGun();
 	float getWorldHeight();
 	float getAngleGunLR(); // LR stands for LeftRight
 	float getAngleGunUD(); // up and down

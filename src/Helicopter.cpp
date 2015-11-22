@@ -130,8 +130,6 @@ void drawHelicopter(float angleHelice,
 		gun.setTranslation(-5.5,0,0);
 		gun.setScale(0.7,0.7,2);
 		const float baseRotation = -90;
-		// base rotation is -90
-		// TODO make angle dynamic
 		gun.setRotation(angleGun);
 		gun.setRotationY(angleGunY);
 		// glTranslatef(-6,0,0);
@@ -194,6 +192,10 @@ void Helicopter::setAngleGunUD(float value){
 	if(fmod((angleGunY + value),float(360.0)) < float(45.0) && fmod((angleGunY + value),float(360.0)) > float(-45.0)){
 		angleGunY = angleGunY + value;
 	}
+}
+
+Cube Helicopter::getGun(){
+	return this->gun;
 }
 // void Helicopter::move(GLfloat value){
 //

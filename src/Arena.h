@@ -20,7 +20,9 @@ class Arena{
 		Cube arenaFront;
 		Cube arenaBack;
 		Cube arenaTop;
-		
+		vector<Cube> objRes;
+		Cube postoAbs;
+
 		Rect arena;
 		Rect postoAbastecimento;
 		Circle jogador;

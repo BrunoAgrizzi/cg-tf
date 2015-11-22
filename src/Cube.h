@@ -33,8 +33,9 @@ public:
     void setTranslation(float tx, float ty, float tz);
 
     void setRotation(float angle);
-
+    float getRotation();
     void setRotationY(float angle);
+    float getRotationY();
 
     void setColor(float r, float g, float b, float q);
 
@@ -43,6 +44,8 @@ public:
     void setTexture(GLuint tex);
 
     void setTexturePath(char* path);
+
+    void setRotationAxis(float x, float y, float z);
 
     // x, y: cube's center will be drawn at these positions
     void draw();

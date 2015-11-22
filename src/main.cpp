@@ -18,6 +18,7 @@ GLuint textureSun;
 GLuint texturePlane;
 
 //Camera controls
+
 double camDist=100;
 double camXYAngle=0;
 double camXZAngle=0;
@@ -55,11 +56,17 @@ void display (void){
     }
     if(toggleCam == 2){ // third person-ish camera
       float anguloPlayer = player.getAngle() * (3.1415 / 180);
+    //   glRotatef(player.getAngleGunUD()/2, 1,0,0);
+    //   glRotatef(-player.getAngleGunLR()/2, 0,1,0);
+    //   gluLookAt(player.getGy() +20,15,player.getGx(),
+    //            player.getGy(), player.getWorldHeight() + 10, player.getGx(),
+    //            0, 1, 0);
+
            gluLookAt(player.getGy() + 10 * cos(-anguloPlayer),player.getWorldHeight() + 30,player.getGx() + 10 * sin(-anguloPlayer),
                     player.getGy(), player.getWorldHeight() + 23, player.getGx(),
                     0, 1, 0);
     }
-    if(toggleCam == 3){
+    if(toggleCam == 3){ // OK
         float anguloPlayer = player.getAngle() * (3.1415 / 180);
 
         glTranslatef(0,0,-camDist);
@@ -117,7 +124,7 @@ void init (void){
 void changeCamera(int angle, int w, int h){
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
-    gluPerspective (angle,(GLfloat)w / (GLfloat)h, 1, 800.0);
+    gluPerspective (angle,(GLfloat)w / (GLfloat)h, 1, 1600.0);
     glMatrixMode (GL_MODELVIEW);
 }
 
@@ -192,8 +199,8 @@ void mouse_passive_motion(int x , int y){
 void idle(){
     if(keys['a'] == 1 || keys['A'] == 1) player.rotate(1);
     if(keys['d'] == 1 || keys['D'] == 1) player.rotate(1 * -1);
-    if(keys['w'] == 1 || keys['W'] == 1) player.move(-0.5);
-    if(keys['s'] == 1 || keys['S'] == 1) player.move(+0.5);
+    if(keys['w'] == 1 || keys['W'] == 1) player.move(-0.5 - 5);
+    if(keys['s'] == 1 || keys['S'] == 1) player.move(+0.5 + 5);
     if(keys['0'] == 1) toggleCam = 0;
     if(keys['1'] == 1) toggleCam = 1;
     if(keys['2'] == 1) toggleCam = 2;
