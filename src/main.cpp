@@ -47,7 +47,7 @@ void display (void){
         // glRotatef(camXZAngle,1,0,0);
         // glRotatef(camXYAngle,0,1,0);
     }
-    if(toggleCam == 1){ // first person
+    if(toggleCam == 1){ // first person OK
       float anguloPlayer = player.getAngle() * (3.1415 / 180);
            gluLookAt(player.getGy() + 10 * cos(-anguloPlayer),player.getWorldHeight() + 30,player.getGx() + 10 * sin(-anguloPlayer),
                     player.getGy(), player.getWorldHeight() + 30, player.getGx(),
@@ -60,11 +60,14 @@ void display (void){
                     0, 1, 0);
     }
     if(toggleCam == 3){
-        //   float anguloPlayer = 0;
-        //   anguloPlayer = player.getAngle() * (3.1415 / 180);
-        //        gluLookAt(player.getGy(), 20, player.getGx(),
-        //                 player.getGy() + -40 * sin(anguloPlayer),0,player.getGx() + -40 * cos(anguloPlayer),
-        //                 -1, 0, 0);
+        float anguloPlayer = player.getAngle() * (3.1415 / 180);
+
+        glTranslatef(0,0,-camDist);
+        glRotatef(camXZAngle,1,0,0);
+        glRotatef(camXYAngle,0,1,0);
+        gluLookAt(player.getGy() + 10 * cos(-anguloPlayer),player.getWorldHeight() + 30,player.getGx() + 10 * sin(-anguloPlayer),
+                 player.getGy(), player.getWorldHeight() + 23, player.getGx(),
+                 0, 1, 0);
     }
 
     //GLfloat light_position[] = { 0.0, 0.0, 0.0, 1.0 };
@@ -135,17 +138,55 @@ void mouse_callback(int button, int state, int x, int y){
 }
 
 void mouse_motion(int x, int y){
-    if (!buttonDown)
-        return;
+    if (!buttonDown) return;
 
-    camXYAngle += x - lastX;
-    camXZAngle += y - lastY;
-
-    camXYAngle = (int)camXYAngle % 360;
-    camXZAngle = (int)camXZAngle % 360;
+    if(lastY < y){
+        if(camXZAngle + 1 < 90 && camXZAngle + 1 > -90){
+            camXZAngle += 1;
+            camXZAngle = (int)camXZAngle % 360;
+        }
+    }
+    if(lastY > y){
+        if(camXZAngle - 1 < 90 && camXZAngle -1  > -90){
+            camXZAngle += -1;
+            camXZAngle = (int)camXZAngle % 360;
+        }
+    }
+    if(lastX < x){
+        if(camXYAngle + 1 < 180 && camXYAngle + 1 > -180){
+            camXYAngle += 1;
+            camXYAngle = (int)camXYAngle % 360;
+        }
+    }
+    if(lastX > x){
+        if(camXYAngle - 1 < 180 && camXYAngle -1  > -180){
+            camXYAngle += -1;
+            camXYAngle = (int)camXYAngle % 360;
+        }
+    }
 
     lastX = x;
     lastY = y;
+}
+
+float mouseX = 0.0;
+float mouseY = 0.0;
+void mouse_passive_motion(int x , int y){
+    static GLdouble previousTime = 0;
+    GLdouble currentTime;
+    GLdouble timeDifference;
+    currentTime = glutGet(GLUT_ELAPSED_TIME);
+    timeDifference = currentTime - previousTime;
+    previousTime = currentTime;
+
+    if(mouseX < x ) player.setAngleGunLR(timeDifference* -0.1);
+	if(mouseX > x )	player.setAngleGunLR(timeDifference* 0.1);
+
+    if(mouseY < y ) player.setAngleGunUD(timeDifference* 0.1);
+    if(mouseY > y ) player.setAngleGunUD(timeDifference* -0.1);
+
+	mouseX = x;
+    mouseY = y;
 }
 
 void idle(){
@@ -156,6 +197,7 @@ void idle(){
     if(keys['0'] == 1) toggleCam = 0;
     if(keys['1'] == 1) toggleCam = 1;
     if(keys['2'] == 1) toggleCam = 2;
+    if(keys['3'] == 1) toggleCam = 3;
     if(keys['+'] == 1) player.setWorldHeight(1);
     if(keys['-'] == 1) player.setWorldHeight(-1);
 
@@ -186,6 +228,7 @@ int main (int argc, char **argv) {
     glutInit (&argc, argv);
     glutInitDisplayMode (GLUT_DOUBLE | GLUT_DEPTH);
     glutInitWindowSize (700, 700);
+    // TODO MUDAR PARA 500x500
     glutInitWindowPosition  (100,0);
     glutCreateWindow ("Trabalho Final");
     init();
@@ -197,7 +240,7 @@ int main (int argc, char **argv) {
     glutMouseFunc(mouse_callback);
     glutKeyboardFunc(setKeyDown);
 	glutKeyboardUpFunc(setKeyUp);
-
+    glutPassiveMotionFunc(mouse_passive_motion);
     glutMainLoop ();
 
     return 0;

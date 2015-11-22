@@ -75,7 +75,16 @@ Helicopter::Helicopter(float velTiro, float velHelicoptero, float tempoDeVoo){
 	// isEnemy = false;
 }
 
-void drawHelicopter(float angleHelice, Cube base, Cube tail, Cube leftTail,Cube rightTail,Cube helix,Cube helix2, Cube gun){
+void drawHelicopter(float angleHelice,
+					Cube base,
+					Cube tail,
+					Cube leftTail,
+					Cube rightTail,
+					Cube helix,
+					Cube helix2,
+					Cube gun,
+					float angleGun,
+					float angleGunY){
 	const float baseScale[] = {7,4,4};
 	const float baseSx = 6, baseSy = 4, baseSz = 4;
 	const float baseTx = 0, baseTy = 0, baseTz = 0;
@@ -123,9 +132,8 @@ void drawHelicopter(float angleHelice, Cube base, Cube tail, Cube leftTail,Cube 
 		const float baseRotation = -90;
 		// base rotation is -90
 		// TODO make angle dynamic
-		gun.setRotation(baseRotation + (-45));
-
-
+		gun.setRotation(angleGun);
+		gun.setRotationY(angleGunY);
 		// glTranslatef(-6,0,0);
 		glutSolidCube(1.0);
 		gun.drawBC();
@@ -139,7 +147,7 @@ void Helicopter::draw(){
 		// TODO Y dinamico
 		glTranslatef(0+gY, worldHeight, 0+gX);
 		glRotatef(angle,0,1,0);
-		drawHelicopter(angleHelice,this->base, tail, leftTail, rightTail, helix, helix2, gun);
+		drawHelicopter(angleHelice,this->base, tail, leftTail, rightTail, helix, helix2, gun, angleGun, angleGunY);
 	glPopMatrix();
 }
 
@@ -171,7 +179,22 @@ void Helicopter::setWorldHeight(float direction){
 float Helicopter::getWorldHeight(){
 	return this->worldHeight;
 }
-
+float Helicopter::getAngleGunLR(){
+	return this->angleGun;
+}
+void Helicopter::setAngleGunLR(float value){
+	if(fmod((angleGun + value),float(360.0)) < float(45.0) && fmod((angleGun + value),float(360.0)) > float(-45.0)){
+		angleGun = angleGun + value;
+	}
+}
+float Helicopter::getAngleGunUD(){
+	return this->angleGunY;
+}
+void Helicopter::setAngleGunUD(float value){
+	if(fmod((angleGunY + value),float(360.0)) < float(45.0) && fmod((angleGunY + value),float(360.0)) > float(-45.0)){
+		angleGunY = angleGunY + value;
+	}
+}
 // void Helicopter::move(GLfloat value){
 //
 // }

@@ -17,6 +17,7 @@ private:
     float transX, transY, transZ;
     float rotationAxis[3];
     float rotationAngle;
+    float rotationAngleY;
     float materialColor[4];
     GLuint texture;
     char* texturePath;
@@ -32,6 +33,8 @@ public:
     void setTranslation(float tx, float ty, float tz);
 
     void setRotation(float angle);
+
+    void setRotationY(float angle);
 
     void setColor(float r, float g, float b, float q);
 

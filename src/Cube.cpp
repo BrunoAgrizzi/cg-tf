@@ -102,7 +102,10 @@ void Cube::drawBC(){
 
     glPushMatrix();
         glTranslatef(this->transX, this->transY, this->transZ);
+        glRotatef(-90, 0,1,0);
+        glRotatef(this->rotationAngleY, 1,0,0);
         glRotatef(this->rotationAngle, 0,1,0);
+
         glScalef(this->scaleX, this->scaleY, this->scaleZ);
         glBegin(GL_QUADS);
             // front
@@ -188,6 +191,9 @@ void Cube::setTranslation(float tx, float ty, float tz){
 
 void Cube::setRotation(float angle){
     this->rotationAngle = angle;
+}
+void Cube::setRotationY(float angle){
+    this->rotationAngleY = angle;
 }
 void Cube::setTexture(GLuint tex){
     this->texture = tex;

@@ -24,6 +24,7 @@ private:
 
 	float worldHeight;
 
+	float angleGun, angleGunY;
 
 
 
@@ -61,9 +62,11 @@ public:
 	float getGx();
 	float getGy();
 	float getWorldHeight();
+	float getAngleGunLR(); // LR stands for LeftRight
+	float getAngleGunUD(); // up and down
 	void setWorldHeight(float direction);
-
-
+	void setAngleGunLR(float value); // ugly right
+	void setAngleGunUD(float value);
 
 
 
@@ -79,7 +82,6 @@ public:
 	// float getGunPosY();
 	// float getGunPosX();
 	// float getAngle();
-	// float getAngleGun();
 	// float getTempoDeVoo();
 	// bool getFlying();
 	// float getVelHelicoptero();
