@@ -131,8 +131,6 @@ void drawHelicopter(float angleHelice,
 		gun.setTranslation(-5.5,0,0);
 		gun.setScale(0.7,0.7,2);
 		const float baseRotation = -90;
-		// base rotation is -90
-		// TODO make angle dynamic
 		gun.setRotation(angleGun);
 		gun.setRotationY(angleGunY);
 		// glTranslatef(-6,0,0);
@@ -204,6 +202,12 @@ void Helicopter::decGas(){
 }
 float Helicopter::getGas(){return this->gas;};
 void Helicopter::setGas(float g){this->gas = g;};
+
+Cube Helicopter::getGun(){
+	return this->gun;
+}
+// void Helicopter::move(GLfloat value){
+
 //
 // }
 // float Helicopter::getFreqTiro(){return this->freqTiro;}

@@ -30,6 +30,10 @@ Cube::Cube(){
     faces[3][0] = 4; faces[3][1] = 5; faces[3][2]= 1; faces[3][3] = 0;
     faces[4][0] = 5; faces[4][1] = 6; faces[4][2]= 2; faces[4][3] = 1;
     faces[5][0] = 7; faces[5][1] = 4; faces[5][2]= 0; faces[5][3] = 3;
+
+    rotationAxis[0] = 0;
+    rotationAxis[1] = 0;
+    rotationAxis[2] = 0;
 }
 
 void Cube::draw(){
@@ -57,8 +61,12 @@ void Cube::draw(){
 
     glPushMatrix();
         glTranslatef(this->transX, this->transY, this->transZ);
-        glRotatef(this->rotationAngle, 0,1,0);
-        glScalef(this->scaleX, this->scaleY, this->scaleZ);
+        if(rotationAxis[0] == 0 && rotationAxis[1] == 0 && rotationAxis[2] == 0){
+            glRotatef(this->rotationAngle, 0,1,0);
+        }else{
+            glRotatef(this->rotationAngle, rotationAxis[0],rotationAxis[1], rotationAxis[2]);
+        }
+            glScalef(this->scaleX, this->scaleY, this->scaleZ);
 
           for (i = 0; i < 6; i++){
               glBegin(GL_QUADS);
@@ -213,6 +221,19 @@ void Cube::setTexturePath(char* path){
     this->texture = LoadTextureRAW(path);
 }
 
+float Cube::getRotation(){
+    return this->rotationAngle;
+}
+
+float Cube::getRotationY(){
+    return this->rotationAngleY;
+}
+
+void Cube::setRotationAxis(float x, float y, float z){
+    rotationAxis[0] = x;
+    rotationAxis[1] = y;
+    rotationAxis[2] = z;
+}
 GLuint LoadTextureRAW( const char * filename ){
 
     GLuint texture;
