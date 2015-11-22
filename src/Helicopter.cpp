@@ -62,8 +62,8 @@ Helicopter::Helicopter(float velTiro, float velHelicoptero, float tempoDeVoo){
 	this->worldHeight = 15;
 	gX = 0.0;
 	gY = 0.0;
-	// cX = 0;
-	// cY = 0;
+	cX = 0;
+	cY = 0;
 	// gas = tempoDeVoo;
 	// angle = 0.0;
 	// flying = false;
@@ -141,10 +141,10 @@ void drawHelicopter(float angleHelice,
 }
 
 void Helicopter::draw(){
-	this->angleHelice = this->angleHelice + 15;
+	this->angleHelice = this->angleHelice + 15.27;
 	glPushMatrix();
 		// TODO Y dinamico
-		glTranslatef(0+gY, worldHeight, 0+gX);
+		glTranslatef(cX+gY, worldHeight,cY+ gX);
 		glRotatef(angle,0,1,0);
 		drawHelicopter(angleHelice,this->base, tail, leftTail, rightTail, helix, helix2, gun, angleGun, angleGunY);
 	glPopMatrix();
@@ -205,6 +205,18 @@ void Helicopter::setGas(float g){this->gas = g;};
 
 Cube Helicopter::getGun(){
 	return this->gun;
+}
+void Helicopter::setInitialXY(float x, float y){
+	cX = x;
+	cY = y;
+}
+
+float Helicopter::getCx(){
+		return cX;
+}
+
+float Helicopter::getCy(){
+	return cY;
 }
 // void Helicopter::move(GLfloat value){
 

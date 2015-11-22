@@ -46,6 +46,13 @@ void Arena::init(){
 
 }
 
+float Arena::getPlayerStartX(){
+    return -arena.getWidth()/2 + postoAbastecimento.getX() + postoAbastecimento.getWidth()/2;
+}
+float Arena::getPlayerStartY(){
+    return -arena.getHeight()/2 + postoAbastecimento.getY() + postoAbastecimento.getHeight()/2;
+}
+
 void Arena::draw(){
   glPushMatrix();
     arenaBot.setTranslation(0,0,0);

@@ -19,7 +19,7 @@ private:
 	float velTiro, velHelicoptero, tempoDeVoo, freqTiro; // xml info
 	float gas;
 	GLfloat gX, gY;
-	// float cX, cY;
+	float cX, cY;
 	GLfloat angle;
 	float angleHelice;
 
@@ -73,8 +73,9 @@ public:
 	void decGas();
 	float getGas();
 	void setGas(float g);
-
-
+	void setInitialXY(float x, float y);
+	float getCx();
+	float getCy();
 
 
 	// void drawEnemy();

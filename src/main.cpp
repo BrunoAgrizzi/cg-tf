@@ -51,8 +51,8 @@ void display (void){
     }
     if(toggleCam == 1){ // first person OK
       float anguloPlayer = player.getAngle() * (3.1415 / 180);
-           gluLookAt(player.getGy() + 10 * cos(-anguloPlayer),player.getWorldHeight() + 30,player.getGx() + 10 * sin(-anguloPlayer),
-                    player.getGy(), player.getWorldHeight() + 30, player.getGx(),
+           gluLookAt(player.getGy() +player.getCx() + 10 * cos(-anguloPlayer),player.getWorldHeight() + 30,player.getGx() + player.getCy() + 10 * sin(-anguloPlayer),
+                    player.getGy()+player.getCx(), player.getWorldHeight() + 30, player.getGx()+player.getCy(),
                     0, 1, 0);
     }
     if(toggleCam == 2){ // third person-ish camera
@@ -63,8 +63,8 @@ void display (void){
     //            player.getGy(), player.getWorldHeight() + 10, player.getGx(),
     //            0, 1, 0);
 
-           gluLookAt(player.getGy() + 10 * cos(-anguloPlayer),player.getWorldHeight() + 30,player.getGx() + 10 * sin(-anguloPlayer),
-                    player.getGy(), player.getWorldHeight() + 23, player.getGx(),
+           gluLookAt(player.getGy() +player.getCx()+ 10 * cos(-anguloPlayer),player.getWorldHeight() + 30,player.getGx()+player.getCy() + 10 * sin(-anguloPlayer),
+                    player.getGy()+player.getCx(), player.getWorldHeight() + 23, player.getGx()+player.getCy(),
                     0, 1, 0);
     }
     if(toggleCam == 3){ // OK
@@ -73,8 +73,8 @@ void display (void){
         glTranslatef(0,0,-camDist);
         glRotatef(camXZAngle,1,0,0);
         glRotatef(camXYAngle,0,1,0);
-        gluLookAt(player.getGy() + 10 * cos(-anguloPlayer),player.getWorldHeight() + 30,player.getGx() + 10 * sin(-anguloPlayer),
-                 player.getGy(), player.getWorldHeight() + 23, player.getGx(),
+        gluLookAt(player.getGy() +player.getCx()+ 10 * cos(-anguloPlayer),player.getWorldHeight() + 30,player.getGx() +player.getCy()+ 10 * sin(-anguloPlayer),
+                 player.getGy()+player.getCx(), player.getWorldHeight() + 23, player.getGx()+player.getCy(),
                  0, 1, 0);
     }
 
@@ -93,9 +93,9 @@ void display (void){
     drawAxes();
 
     // Disable color tracking
-glDisable(GL_COLOR_MATERIAL);
-glDisable(GL_LIGHTING);
-glDisable(GL_TEXTURE_2D);
+    glDisable(GL_COLOR_MATERIAL);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_TEXTURE_2D);
 
     /*Orthogonal viewing*/
 	glMatrixMode(GL_PROJECTION);
@@ -153,8 +153,9 @@ void init (void){
 
     //  standard camera
     toggleCam = 0;
-
+    float hcx = arena.getPlayerStartX(), hcy = arena.getPlayerStartY();
      player.init();
+     player.setInitialXY(arena.getPlayerStartX(), arena.getPlayerStartY());
 }
 
 void changeCamera(int angle, int w, int h){
