@@ -5,7 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include <string>
-// #include "Helicopter.h"
+#include "Helicopter.h"
 using namespace std;
 
 extern const float red[];
@@ -19,6 +19,7 @@ extern const float darkgreen[];
 
 extern int keys[256];
 
+bool onPosto(Helicopter player, Rect posto);
 void drawAxes();
 void setKeyUp(unsigned char key, int x, int j);
 void setKeyDown(unsigned char key, int x, int j);
@@ -27,7 +28,6 @@ void setKeyDown(unsigned char key, int x, int j);
 // void setKeyDown(unsigned char key, int x, int j);
 // bool checkDefeat(Helicopter player, float x, float y, vector<Shot> enemyShots);
 // bool checkVictory(Helicopter player, int nObjects, float x, float y);
-// bool onPosto(Helicopter player, Rect posto);
 // bool onArena(Helicopter player, Rect arena, float displacement);
 // bool checkCollision(float x, float y, float r, float a, float b, float c);
 // int onEnemy(vector<Helicopter> enemies, int i);

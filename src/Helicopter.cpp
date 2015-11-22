@@ -66,7 +66,7 @@ Helicopter::Helicopter(float velTiro, float velHelicoptero, float tempoDeVoo){
 	cY = 0;
 	// gas = tempoDeVoo;
 	// angle = 0.0;
-	// flying = false;
+	flying = false;
 	// velHelice = 0.0;
 	// radius = bodyWidth;
 	// this->rescuedObjects = 0;
@@ -218,6 +218,16 @@ float Helicopter::getCx(){
 float Helicopter::getCy(){
 	return cY;
 }
+bool Helicopter::getFlying(){return flying;}
+float Helicopter::getPosX(){return gX;}
+float Helicopter::getPosY(){return gY;}
+void Helicopter::setFlying(){
+	if(flying){
+		flying = false;
+	}else{
+		flying = true;
+	}
+}
 // void Helicopter::move(GLfloat value){
 
 //
@@ -226,11 +236,8 @@ float Helicopter::getCy(){
 // float Helicopter::getVelTiro(){return this->velTiro;}
 // float Helicopter::getVelHelicoptero(){return this->velHelicoptero;}
 // float Helicopter::getCurrentAngleGun(){return angleGun + angle;}
-// float Helicopter::getGunPosX(){return cX + gX;}
-// float Helicopter::getGunPosY(){return cY + gY;}
 // float Helicopter::getAngle(){return angle;}
 // float Helicopter::getAngleGun(){return angleGun;}
-// bool Helicopter::getFlying(){return flying;}
 // float Helicopter::getTempoDeVoo(){return this->tempoDeVoo;}
 // void Helicopter::moveX(GLfloat value){}
 // void Helicopter::setAngle(float a){this->angle = a;}
@@ -266,13 +273,6 @@ float Helicopter::getCy(){
 // }
 // void Helicopter::moveHelice(float value){
 // 	velHelice += value;
-// }
-// void Helicopter::setFlying(){
-// 	if(flying){
-// 		flying = false;
-// 	}else{
-// 		flying = true;
-// 	}
 // }
 // void Helicopter::setArena(float aX, float aY){
 // 	this->arenaX = aX;

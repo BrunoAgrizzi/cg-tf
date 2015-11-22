@@ -133,9 +133,9 @@ glEnable(GL_TEXTURE_2D);
 }
 void timerGasBar(int value){
 	// on posto
-	//if(player.getFlying() || !onPosto(player, arena.getPostoAbastecimento())){
+	if(player.getFlying() || !onPosto(player, arena.getPostoAbastecimento())){
 		player.decGas();
-	//}
+	}
 
 	glutTimerFunc((1000),timerGasBar,0);
 	glutPostRedisplay();
@@ -244,7 +244,12 @@ void idle(){
     if(keys['3'] == 1) toggleCam = 3;
     if(keys['+'] == 1) player.setWorldHeight(1);
     if(keys['-'] == 1) player.setWorldHeight(-1);
-
+    if(!player.getFlying() && onPosto(player, arena.getPostoAbastecimento())){
+        player.setGas(player.getTempoDeVoo() + 1);
+    }
+    if(player.getWorldHeight() < 15) {
+        player.setFlying();
+    }
     glutPostRedisplay();
 }
 

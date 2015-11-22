@@ -38,7 +38,7 @@ class Arena{
 		Rect getArena();
 		float getPlayerStartX();
 		float getPlayerStartY();
-		// Rect getPostoAbastecimento();
+		Rect getPostoAbastecimento();
 		// Circle getJogador();
 		// void drawArena(float x, float y);
 		// vector<Circle> getInimigos();

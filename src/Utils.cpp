@@ -148,6 +148,18 @@ void setKeyDown(unsigned char key, int x, int j){
 	glutPostRedisplay();
 }
 
+bool onPosto(Helicopter player, Rect posto){
+	if(player.getPosX() > posto.getX()
+		&& player.getPosX() < (posto.getX() + posto.getWidth())
+		&& player.getPosY() > posto.getY()
+		&& player.getPosY() < (posto.getY() + posto.getHeight())
+	){
+		// on posto
+		return true;
+	}
+	// left posto
+	return false;
+}
 
 /*
 void init (float arenaX, float arenaY){
@@ -275,18 +287,6 @@ bool onPlayer(Helicopter player, Helicopter enemy){
 	return false;
 }
 
-bool onPosto(Helicopter player, Rect posto){
-	if(player.getGunPosX() > posto.getX()
-		&& player.getGunPosX() < (posto.getX() + posto.getWidth())
-		&& player.getGunPosY() > posto.getY()
-		&& player.getGunPosY() < (posto.getY() + posto.getHeight())
-	){
-		// on posto
-		return true;
-	}
-	// left posto
-	return false;
-}
 
 bool checkCollision(float x, float y, float r, float a, float b, float c){
 	float dist = sqrt(pow(x - a, 2) + pow(y - b, 2));

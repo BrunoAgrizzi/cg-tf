@@ -105,6 +105,9 @@ void Arena::draw(){
 Rect Arena::getArena(){
   return this->arena;
 }
+Rect Arena::getPostoAbastecimento(){
+	return this->postoAbastecimento;
+}
 
 
 // void Arena::drawArena(float x, float y){
@@ -134,9 +137,6 @@ Rect Arena::getArena(){
 // 	return this->arena;
 // }
 //
-// Rect Arena::getPostoAbastecimento(){
-// 	return this->postoAbastecimento;
-// }
 //
 // Circle Arena::getJogador(){
 // 	return this->jogador;

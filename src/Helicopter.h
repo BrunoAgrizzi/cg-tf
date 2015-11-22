@@ -17,12 +17,12 @@ class Helicopter{
 private:
 	Cube base, tail, leftTail, rightTail, helix, helix2, gun; // objects to be drawn
 	float velTiro, velHelicoptero, tempoDeVoo, freqTiro; // xml info
-	float gas;
 	GLfloat gX, gY;
 	float cX, cY;
 	GLfloat angle;
 	float angleHelice;
-
+	float gas;
+	bool flying;
 	float worldHeight;
 
 	float angleGun, angleGunY;
@@ -37,7 +37,6 @@ private:
 	// float gunX, gunY;
 	// float velHelice;
 	// float arenaX, arenaY;
-	// float gas;
 	// float radius;
 	// bool collided;
 	// int rescuedObjects;
@@ -76,6 +75,10 @@ public:
 	void setInitialXY(float x, float y);
 	float getCx();
 	float getCy();
+	float getPosY();
+	float getPosX();
+	void setFlying();
+	bool getFlying();
 
 
 	// void drawEnemy();
@@ -84,13 +87,9 @@ public:
 	// Rect getGun();
 	// void moveX(GLfloat value);
 	// void rotateGun(float value);
-	// void setFlying();
 	// float getCurrentAngleGun();
-	// float getGunPosY();
-	// float getGunPosX();
 	// float getAngle();
 	// float getTempoDeVoo();
-	// bool getFlying();
 	// float getVelHelicoptero();
 	// void setArena(float aX, float aY);
 	// void draw_gun();
