@@ -17,6 +17,7 @@ class Helicopter{
 private:
 	Cube base, tail, leftTail, rightTail, helix, helix2, gun; // objects to be drawn
 	float velTiro, velHelicoptero, tempoDeVoo, freqTiro; // xml info
+	float gas;
 	GLfloat gX, gY;
 	// float cX, cY;
 	GLfloat angle;
@@ -67,6 +68,10 @@ public:
 	void setWorldHeight(float direction);
 	void setAngleGunLR(float value); // ugly right
 	void setAngleGunUD(float value);
+	float getTempoDeVoo();
+	void decGas();
+	float getGas();
+	void setGas(float g);
 
 
 

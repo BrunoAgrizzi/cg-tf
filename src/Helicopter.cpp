@@ -19,6 +19,7 @@ void Helicopter::init(){
 	this->rightTail = Cube();
 	this->helix = Cube();
 	this->helix2 = Cube();
+	this->gas = this->tempoDeVoo;
 
 	this->base.setTexturePath("../img/sun1.bmp");
 	this->tail.setTexturePath("../img/sun1.bmp");
@@ -195,7 +196,14 @@ void Helicopter::setAngleGunUD(float value){
 		angleGunY = angleGunY + value;
 	}
 }
-// void Helicopter::move(GLfloat value){
+float Helicopter::getTempoDeVoo(){
+	return this->tempoDeVoo;
+}
+void Helicopter::decGas(){
+ 	this->gas--;
+}
+float Helicopter::getGas(){return this->gas;};
+void Helicopter::setGas(float g){this->gas = g;};
 //
 // }
 // float Helicopter::getFreqTiro(){return this->freqTiro;}

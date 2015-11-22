@@ -8,6 +8,7 @@
 #include "XMLConfig.h"
 #include "Arena.h"
 #include "Utils.h"
+#include "Rect.h"
 
 XMLConfig config;
 Arena arena;
@@ -84,12 +85,54 @@ void display (void){
     player.draw();
     drawAxes();
 
+    // Disable color tracking
+glDisable(GL_COLOR_MATERIAL);
+glDisable(GL_LIGHTING);
+glDisable(GL_TEXTURE_2D);
 
-    // arena.drawArena();
+    /*Orthogonal viewing*/
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	glOrtho(-2.0, 2.0, -2.0, 2.0, -2.0, 10000);
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
+	gluLookAt(0.0, 0.0, 2.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+
+
+      /*Draw GAS*/
+      glPushMatrix();
+        glTranslatef(0.1, -1.8, 0);
+        glScalef(0.2, 0.3, 0);
+        glRotatef(90,0,0,1);
+        Rect(0.0, 0.0, 1.0,10.0, "blue", 1.0, "black","").drawGasBar();
+        glTranslatef(0.0,player.getGas()- 10 ,0.0);
+        Rect(0.0,0.0,1.2,0.5,"",0.0,"","").drawGasIndicator();
+      glPopMatrix();
+
+      /*Restore the viewing mode*/
+    	glMatrixMode(GL_PROJECTION);
+    	glPopMatrix();
+    	glMatrixMode(GL_MODELVIEW);
+    	glPopMatrix();
+
+      // Enable color tracking
+glEnable(GL_COLOR_MATERIAL);
+glEnable(GL_LIGHTING);
+glEnable(GL_TEXTURE_2D);
 
     glutSwapBuffers();
 }
+void timerGasBar(int value){
+	// on posto
+	//if(player.getFlying() || !onPosto(player, arena.getPostoAbastecimento())){
+		player.decGas();
+	//}
 
+	glutTimerFunc((1000),timerGasBar,0);
+	glutPostRedisplay();
+}
 void init (void){
      glEnable(GL_DEPTH_TEST);
      glEnable( GL_TEXTURE_2D );
@@ -105,13 +148,6 @@ void init (void){
     toggleCam = 0;
 
      player.init();
-    //setTexture(textureSun);
-    //glMatrixMode(GL_PROJECTION);
-    //glMatrixMode(GL_MODELVIEW);
-
-    glMatrixMode(GL_PROJECTION);
-
-    glMatrixMode(GL_MODELVIEW);
 }
 
 void changeCamera(int angle, int w, int h){
@@ -241,6 +277,8 @@ int main (int argc, char **argv) {
     glutKeyboardFunc(setKeyDown);
 	glutKeyboardUpFunc(setKeyUp);
     glutPassiveMotionFunc(mouse_passive_motion);
+    //timers
+    glutTimerFunc(1000, timerGasBar, 0);
     glutMainLoop ();
 
     return 0;
