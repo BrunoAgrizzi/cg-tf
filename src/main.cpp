@@ -234,10 +234,12 @@ void mouse_passive_motion(int x , int y){
 }
 
 void idle(){
+  if(player.getFlying()){
     if(keys['a'] == 1 || keys['A'] == 1) player.rotate(1);
     if(keys['d'] == 1 || keys['D'] == 1) player.rotate(1 * -1);
     if(keys['w'] == 1 || keys['W'] == 1) player.move(-0.5 - 5);
     if(keys['s'] == 1 || keys['S'] == 1) player.move(+0.5 + 5);
+  }
     if(keys['0'] == 1) toggleCam = 0;
     if(keys['1'] == 1) toggleCam = 1;
     if(keys['2'] == 1) toggleCam = 2;
@@ -248,8 +250,11 @@ void idle(){
         player.setGas(player.getTempoDeVoo() + 1);
     }
     if(player.getWorldHeight() < 15) {
-        player.setFlying();
-    }
+        player.setFlying(false);
+    }else
+        player.setFlying(true);
+
+
     glutPostRedisplay();
 }
 

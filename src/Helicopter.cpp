@@ -59,7 +59,7 @@ Helicopter::Helicopter(float velTiro, float velHelicoptero, float tempoDeVoo){
 	this->velHelicoptero = velHelicoptero;
 	this->tempoDeVoo = tempoDeVoo;
 	this->angle = 0;
-	this->worldHeight = 15;
+	this->worldHeight = 10;
 	gX = 0.0;
 	gY = 0.0;
 	cX = 0;
@@ -85,7 +85,7 @@ void drawHelicopter(float angleHelice,
 					Cube helix2,
 					Cube gun,
 					float angleGun,
-					float angleGunY){
+					float angleGunY,bool flying){
 	const float baseScale[] = {7,4,4};
 	const float baseSx = 6, baseSy = 4, baseSz = 4;
 	const float baseTx = 0, baseTy = 0, baseTz = 0;
@@ -116,13 +116,13 @@ void drawHelicopter(float angleHelice,
 		rightTail.draw();
     glPopMatrix();
 	glPushMatrix();
-		helix.setRotation(angleHelice);
+		if(flying)helix.setRotation(angleHelice);
 		helix.setScale(12, 0.3, 1);
 		helix.setTranslation(0,baseSy + 0.5,0);
 		helix.draw();
 
-		helix2.setRotation(0);
-		helix2.setRotation(angleHelice-90);
+		helix2.setRotation(90);
+		if(flying)helix2.setRotation(angleHelice-90);
 		helix2.setScale(12, 0.3, 1);
 		helix2.setTranslation(0,baseSy + 0.5,0);
 		helix2.draw();
@@ -146,7 +146,7 @@ void Helicopter::draw(){
 		// TODO Y dinamico
 		glTranslatef(cX+gY, worldHeight,cY+ gX);
 		glRotatef(angle,0,1,0);
-		drawHelicopter(angleHelice,this->base, tail, leftTail, rightTail, helix, helix2, gun, angleGun, angleGunY);
+		drawHelicopter(angleHelice,this->base, tail, leftTail, rightTail, helix, helix2, gun, angleGun, angleGunY,flying);
 	glPopMatrix();
 }
 
@@ -221,12 +221,8 @@ float Helicopter::getCy(){
 bool Helicopter::getFlying(){return flying;}
 float Helicopter::getPosX(){return gX;}
 float Helicopter::getPosY(){return gY;}
-void Helicopter::setFlying(){
-	if(flying){
-		flying = false;
-	}else{
-		flying = true;
-	}
+void Helicopter::setFlying(bool val){
+	this->flying = val;
 }
 // void Helicopter::move(GLfloat value){
 
