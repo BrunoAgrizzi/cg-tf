@@ -9,15 +9,19 @@
 #include "Arena.h"
 #include "Utils.h"
 #include "Rect.h"
+#include "Shot.h"
 
 XMLConfig config;
 Arena arena;
 Helicopter player;
+vector<Helicopter> enemies;
+
 
 GLuint textureEarth;
 GLuint textureSun;
 GLuint texturePlane;
 
+vector<Shot> playerShots;
 //Camera controls
 
 double camDist=100;
@@ -34,12 +38,9 @@ void display (void){
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
-    GLfloat light_diffuse[] = {1.0, 1.0, 1.0, 1.0};  /* white diffuse light. */
-    GLfloat light_position[] = {0.0, 0.0, 1.0, 0.0};  /* Infinite light location. */
-    //glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+
     glPushMatrix();
     glTranslatef(0.0, 10.0, 10.0);
-    //glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
     glPopMatrix();
 
     if (toggleCam == 0){
@@ -57,14 +58,11 @@ void display (void){
     }
     if(toggleCam == 2){ // third person-ish camera
       float anguloPlayer = player.getAngle() * (3.1415 / 180);
-    //   glRotatef(player.getAngleGunUD()/2, 1,0,0);
-    //   glRotatef(-player.getAngleGunLR()/2, 0,1,0);
-    //   gluLookAt(player.getGy() +20,15,player.getGx(),
-    //            player.getGy(), player.getWorldHeight() + 10, player.getGx(),
-    //            0, 1, 0);
-
-           gluLookAt(player.getGy() +player.getCx()+ 10 * cos(-anguloPlayer),player.getWorldHeight() + 30,player.getGx()+player.getCy() + 10 * sin(-anguloPlayer),
-                    player.getGy()+player.getCx(), player.getWorldHeight() + 23, player.getGx()+player.getCy(),
+      glRotatef(player.getAngleGunUD()/2, 1,0,0);
+      glRotatef(-player.getAngleGunLR()/2, 0,1,0);
+      glTranslatef(-5.5,0,0);
+           gluLookAt(player.getGy() +player.getCx() -12 * cos(-anguloPlayer),player.getWorldHeight(),player.getGx()+player.getCy() + 5 * sin(-anguloPlayer),
+                    player.getGy()+player.getCx() -23, player.getWorldHeight(), player.getGx()+player.getCy(),
                     0, 1, 0);
     }
     if(toggleCam == 3){ // OK
@@ -78,21 +76,21 @@ void display (void){
                  0, 1, 0);
     }
 
-    //GLfloat light_position[] = { 0.0, 0.0, 0.0, 1.0 };
-    //glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-
-    //GLfloat light_position1[] = { 70.0, 70.0, 0.0, 1.0 };
-    //GLfloat light1[] = {1,1,1,1};
-    //glLightfv(GL_LIGHT1, GL_POSITION, light_position1);
-    //glLightfv(GL_LIGHT1, GL_DIFFUSE, light1);
+    // GLfloat light_position[] = { 0.0, 0.0, 0.0, 1.0 };
 
 
 
+    enemies.at(0).draw();
+    enemies.at(1).draw();
+    enemies.at(2).draw();
     arena.draw();
     player.draw();
     drawAxes();
 
-    // Disable color tracking
+    for(int i = 0 ; i < playerShots.size() ; i++){
+            playerShots.at(i).draw();
+    }
+
     glDisable(GL_COLOR_MATERIAL);
     glDisable(GL_LIGHTING);
     glDisable(GL_TEXTURE_2D);
@@ -125,22 +123,32 @@ void display (void){
     	glPopMatrix();
 
       // Enable color tracking
-glEnable(GL_COLOR_MATERIAL);
-glEnable(GL_LIGHTING);
-glEnable(GL_TEXTURE_2D);
+    glEnable(GL_COLOR_MATERIAL);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_TEXTURE_2D);
 
     glutSwapBuffers();
 }
 void timerGasBar(int value){
 	// on posto
 	if(player.getFlying() || !onPosto(player, arena.getPostoAbastecimento())){
-		player.decGas();
+        if(player.getGas() > 10){
+        player.decGas();
+
+        }
+
 	}
 
 	glutTimerFunc((1000),timerGasBar,0);
 	glutPostRedisplay();
 }
+
 void init (void){
+    GLfloat light_diffuse[] = {1.0, 1.0, 1.0, 1.0};  /* white diffuse light. */
+    // GLfloat light_position[] = {0.0, 0.0, 1.0, 0.0};  /* Infinite light location. */
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+    // glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+    // glEnable(GL_LIGHT0);
      glEnable(GL_DEPTH_TEST);
      glEnable( GL_TEXTURE_2D );
      glEnable(GL_LIGHTING);    //    glShadeModel (GL_FLAT);
@@ -149,7 +157,9 @@ void init (void){
      glShadeModel (GL_SMOOTH);
      glDepthFunc(GL_LEQUAL);
      arena.init();
-
+     enemies.at(0).initEnemy();
+     enemies.at(1).initEnemy();
+     enemies.at(2).initEnemy();
 
     //  standard camera
     toggleCam = 3;
@@ -175,7 +185,16 @@ void mouse_callback(int button, int state, int x, int y){
         lastX = x;
         lastY = y;
         buttonDown = 1;
-    }
+        // playerShots.push_back(Shot(player.getPosX() + player.getGx(),
+		// 							player.getPosY() + player.getGy(),
+		// 							player.getAngleGunLR(),
+		// 							player.getAngle(),
+		// 							10,
+		// 							player.getAngleGunLR()));
+	}
+
+
+
     if (button == GLUT_RIGHT_BUTTON && state == GLUT_UP) {
         buttonDown = 0;
     }
@@ -255,12 +274,15 @@ void idle(){
         player.setFlying(true);
     }
 
+    if(keys['l'] == 1){
+        // glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+        // glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+
+    }
+
     for(int i = 0; i < arena.getObjs().size() ; i++){
-		// collision happende and object wasn't collected yet
 		if(onObjetoResgate(player, arena.getObjetosResgate().at(i))){
                 arena.getObjetosResgate().erase(arena.getObjetosResgate().begin() + i);
-			// arena.collect(i);
-			// player.setRescuedObjects(player.getRescuedObjects() + 1 );
 		}
 	}
 
@@ -288,12 +310,15 @@ int main (int argc, char **argv) {
     config.readXML(path);
     arena.readXMLArena((config.getArena().getPath() + config.getArena().getName() + "." + config.getArena().getExtension()).c_str());
     player = config.readHelicopterConfig(path);
+    enemies.push_back(config.readEnemyHelicopter(path, 100, 100));
+    enemies.push_back(config.readEnemyHelicopter(path, 150, -100));
+    enemies.push_back(config.readEnemyHelicopter(path, -100, -100));
 
     glutInit (&argc, argv);
     glutInitDisplayMode (GLUT_DOUBLE | GLUT_DEPTH);
-    glutInitWindowSize (700, 700);
+    glutInitWindowSize (500, 500);
     // TODO MUDAR PARA 500x500
-    glutInitWindowPosition  (100,0);
+    glutInitWindowPosition  (200,100);
     glutCreateWindow ("Trabalho Final");
     init();
     glutDisplayFunc (idle);

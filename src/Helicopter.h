@@ -24,7 +24,7 @@ private:
 	float gas;
 	bool flying;
 	float worldHeight;
-
+	vector<Cube> tiros;
 	float angleGun, angleGunY;
 
 
@@ -53,6 +53,7 @@ public:
 	Helicopter(float velTiro, float velHelicoptero, float tempoDeVoo);
 	void draw();
 	void init();
+	void initEnemy();
 	void rotate(GLfloat value);
 	void move(GLfloat value);
 

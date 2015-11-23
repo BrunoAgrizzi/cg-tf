@@ -14,12 +14,12 @@ void Arena::init(){
 
     arenaLeft = Cube();
 
-  arenaBot.setTexturePath("../img/earth.bmp");
-  arenaLeft.setTexturePath("../img/stars1.bmp");
-  arenaRight.setTexturePath("../img/stars1.bmp");
-  arenaFront.setTexturePath("../img/stars1.bmp");
-  arenaBack.setTexturePath("../img/stars1.bmp");
-  arenaTop.setTexturePath("../img/stars1.bmp");
+  arenaBot.setTexturePath("../img/bricks.bmp");
+  arenaLeft.setTexturePath("../img/ceu.bmp");
+  arenaRight.setTexturePath("../img/ceu.bmp");
+  arenaFront.setTexturePath("../img/ceu.bmp");
+  arenaBack.setTexturePath("../img/ceu.bmp");
+  arenaTop.setTexturePath("../img/ceu.bmp");
 
   for(int j = 0; j < objetosResgate.size() ; j++){
 
@@ -90,6 +90,12 @@ void Arena::draw(){
       arenaBack.setRotationAxis(1,0,0);
       arenaBack.setTranslation(0,(arena.getHeight())/2,arena.getHeight()/2);
       arenaBack.draw();
+  glPopMatrix();
+
+  glPushMatrix();
+  arenaTop.setTranslation(0,200,0);
+  arenaTop.setScale(arena.getWidth()/2,0.1,arena.getHeight()/2);
+  arenaTop.draw();
   glPopMatrix();
 
   glPushMatrix();

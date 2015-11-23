@@ -21,6 +21,24 @@ void Helicopter::init(){
 	this->helix2 = Cube();
 	this->gas = this->tempoDeVoo;
 
+	this->base.setTexturePath("../img/v.bmp");
+	this->tail.setTexturePath("../img/v.bmp");
+	this->leftTail.setTexturePath("../img/v.bmp");
+	this->rightTail.setTexturePath("../img/v.bmp");
+	this->helix.setTexturePath("../img/grass1.bmp");
+	this->helix2.setTexturePath("../img/grass1.bmp");
+	this->gun.setTexturePath("../img/stars1.bmp");
+}
+
+void Helicopter::initEnemy(){
+	this->base = Cube();
+	this->tail = Cube();
+	this->leftTail = Cube();
+	this->rightTail = Cube();
+	this->helix = Cube();
+	this->helix2 = Cube();
+	this->gas = this->tempoDeVoo;
+
 	this->base.setTexturePath("../img/sun1.bmp");
 	this->tail.setTexturePath("../img/sun1.bmp");
 	this->leftTail.setTexturePath("../img/sun1.bmp");
@@ -34,16 +52,16 @@ void Helicopter::init(){
 Helicopter::Helicopter(float freqTiro, float velHelicoptero, float cx, float cy){
 	this->velTiro = 0.2;
 	this->freqTiro = freqTiro;
-	this->velHelicoptero= velHelicoptero;
-	this->worldHeight = 15;
-	// cX = cx;
-	// cY = cy;
-	// gX = 0.0,
-	// gY = 0.0;
+	this->velHelicoptero = velHelicoptero;
+	this->worldHeight = 40;
+	cX = cx;
+	cY = cy;
+	gX = 0.0,
+	gY = 0.0;
 	// radius = bodyWidth*0.7;
-	// // angle = rand() % 360;
+	angle = rand() % 360;
 	// this->angle = 0.0;
-	// flying = true;
+	flying = true;
 	// velHelice = 10.0;
 	// this->collided = false;
 	// this->rescuedObjects = 0;
