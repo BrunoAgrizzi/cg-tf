@@ -23,7 +23,7 @@ GLuint texturePlane;
 double camDist=100;
 double camXYAngle=0;
 double camXZAngle=0;
-int toggleCam = 0;
+int toggleCam = 3;
 int camAngle = 60;
 int lastX = 0;
 int lastY = 0;
@@ -152,7 +152,7 @@ void init (void){
 
 
     //  standard camera
-    toggleCam = 0;
+    toggleCam = 3;
     float hcx = arena.getPlayerStartX(), hcy = arena.getPlayerStartY();
      player.init();
      player.setInitialXY(arena.getPlayerStartX(), arena.getPlayerStartY());
@@ -250,6 +250,16 @@ void idle(){
     if(player.getWorldHeight() < 15) {
         player.setFlying();
     }
+    for(int i = 0; i < arena.getObjs().size() ; i++){
+		// collision happende and object wasn't collected yet
+		if(onObjetoResgate(player, arena.getObjetosResgate().at(i))){
+                arena.getObjetosResgate().erase(arena.getObjetosResgate().begin() + i);
+			// arena.collect(i);
+			// player.setRescuedObjects(player.getRescuedObjects() + 1 );
+		}
+	}
+
+
     glutPostRedisplay();
 }
 

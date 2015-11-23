@@ -161,6 +161,38 @@ bool onPosto(Helicopter player, Rect posto){
 	return false;
 }
 
+bool checkCollision(float x, float y, float r, float a, float b, float c){
+	float dist = sqrt(pow(x - a, 2) + pow(y - b, 2));
+	bool result;
+	if(dist <= (r + c)){
+		result = true;
+	}else{
+		result = false;
+	}
+	return result;
+}
+
+bool onObjetoResgate(Helicopter player, Circle objetoResgate){
+	// if(player.getPosX() > posto.getX()
+	// 	&& player.getPosX() < (posto.getX() + posto.getWidth())
+	// 	&& player.getPosY() > posto.getY()
+	// 	&& player.getPosY() < (posto.getY() + posto.getHeight())
+	// ){
+	// 	// on posto
+	// 	return true;
+	// }
+	// // left posto
+	// return false;
+	return checkCollision(player.getPosX() + player.getCx(),
+							player.getPosY() + player.getCy(),
+							10.0,
+							objetoResgate.getCx(),
+							objetoResgate.getCy(),
+							10);
+}
+
+
+
 /*
 void init (float arenaX, float arenaY){
 	glClearColor (0.0, 0.0, 0.0, 0.0);

@@ -109,6 +109,9 @@ Rect Arena::getPostoAbastecimento(){
 	return this->postoAbastecimento;
 }
 
+vector<Cube> Arena::getObjs(){
+    return objRes;
+}
 
 // void Arena::drawArena(float x, float y){
 // 	glPushMatrix();
@@ -146,9 +149,9 @@ Rect Arena::getPostoAbastecimento(){
 // 	return this->inimigos;
 // }
 //
-// vector<Circle> Arena::getObjetosResgate(){
-// 	return this->objetosResgate;
-// }
+vector<Circle> Arena::getObjetosResgate(){
+	return this->objetosResgate;
+}
 
 void Arena::readXMLArena(const char* path){
     cout << "Reading arena at: " << path << endl;

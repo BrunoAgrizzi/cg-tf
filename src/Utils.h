@@ -31,7 +31,7 @@ void setKeyDown(unsigned char key, int x, int j);
 // bool onArena(Helicopter player, Rect arena, float displacement);
 // bool checkCollision(float x, float y, float r, float a, float b, float c);
 // int onEnemy(vector<Helicopter> enemies, int i);
-// bool onObjetoResgate(Helicopter player, Circle objetosResgate);
+bool onObjetoResgate(Helicopter player, Circle objetoResgate);
 // bool onPlayer(Helicopter player, Helicopter enemy);
 // int wasShot(Helicopter h, vector<Shot> shots);
 // int willCollide(Helicopter h1, Helicopter h2, float displacement);

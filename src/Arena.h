@@ -39,10 +39,11 @@ class Arena{
 		float getPlayerStartX();
 		float getPlayerStartY();
 		Rect getPostoAbastecimento();
+		vector<Cube> getObjs();
 		// Circle getJogador();
 		// void drawArena(float x, float y);
 		// vector<Circle> getInimigos();
-		// vector<Circle> getObjetosResgate();
+		vector<Circle> getObjetosResgate();
 		// string verifyClick(int x, int y);
 		// void collect(int i);
 };
