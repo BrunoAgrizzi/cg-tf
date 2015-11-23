@@ -77,7 +77,7 @@ public:
 	float getCy();
 	float getPosY();
 	float getPosX();
-	void setFlying();
+	void setFlying(bool val);
 	bool getFlying();
 
 

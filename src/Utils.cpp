@@ -149,11 +149,12 @@ void setKeyDown(unsigned char key, int x, int j){
 }
 
 bool onPosto(Helicopter player, Rect posto){
-	if(player.getPosX() > posto.getX()
-		&& player.getPosX() < (posto.getX() + posto.getWidth())
-		&& player.getPosY() > posto.getY()
-		&& player.getPosY() < (posto.getY() + posto.getHeight())
+	if(player.getPosX() + player.getCx() > posto.getX()
+		&& player.getPosX() + player.getCx() < (posto.getX() + posto.getWidth())
+		&& player.getPosY()+ player.getCy() > posto.getY()
+		&& player.getPosY() + player.getCy() < (posto.getY() + posto.getHeight())
 	){
+		std::cout << "ENTROU" << std::endl;
 		// on posto
 		return true;
 	}
